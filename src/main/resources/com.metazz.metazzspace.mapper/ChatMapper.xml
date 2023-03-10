@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.metazz.metazzspace.mapper.ChatMapper">
+  <resultMap id="BaseResultMap" type="com.metazz.metazzspace.entity.Chat">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="comments" jdbcType="INTEGER" property="comments" />
+    <result column="approvals" jdbcType="INTEGER" property="approvals" />
+    <result column="clicks" jdbcType="INTEGER" property="clicks" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="open_comment" jdbcType="VARCHAR" property="openComment" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, content, comments, approvals, clicks, `status`, open_comment, created_time, updated_time, 
+    delete_time
+  </sql>
+</mapper>

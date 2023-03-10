@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.metazz.metazzspace.mapper.BlogUserCollectMapper">
+  <resultMap id="BaseResultMap" type="com.metazz.metazzspace.entity.BlogUserCollect">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="blog_id" jdbcType="INTEGER" property="blogId" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, blog_id, created_time
+  </sql>
+</mapper>

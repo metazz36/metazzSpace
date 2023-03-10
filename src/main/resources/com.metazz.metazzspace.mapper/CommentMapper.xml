@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.metazz.metazzspace.mapper.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.metazz.metazzspace.entity.Comment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="object_id" jdbcType="INTEGER" property="objectId" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="from_uid" jdbcType="INTEGER" property="fromUid" />
+    <result column="to_uid" jdbcType="INTEGER" property="toUid" />
+    <result column="comment_id" jdbcType="INTEGER" property="commentId" />
+    <result column="approvals" jdbcType="INTEGER" property="approvals" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, content, object_id, `type`, `status`, from_uid, to_uid, comment_id, approvals, 
+    created_time, delete_time
+  </sql>
+</mapper>

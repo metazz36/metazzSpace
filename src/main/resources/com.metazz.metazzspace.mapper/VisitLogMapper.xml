@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.metazz.metazzspace.mapper.VisitLogMapper">
+  <resultMap id="BaseResultMap" type="com.metazz.metazzspace.entity.VisitLog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="http_method" jdbcType="VARCHAR" property="httpMethod" />
+    <result column="class_method" jdbcType="VARCHAR" property="classMethod" />
+    <result column="request_params" jdbcType="VARCHAR" property="requestParams" />
+    <result column="response_params" jdbcType="VARCHAR" property="responseParams" />
+    <result column="exception_info" jdbcType="VARCHAR" property="exceptionInfo" />
+    <result column="request_time" jdbcType="TIMESTAMP" property="requestTime" />
+    <result column="response_time" jdbcType="TIMESTAMP" property="responseTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, ip, url, http_method, class_method, request_params, response_params, 
+    exception_info, request_time, response_time
+  </sql>
+</mapper>
