@@ -2,8 +2,8 @@ package com.metazz.metazzspace.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.metazz.metazzspace.dto.BlogDTO;
-import com.metazz.metazzspace.entity.Blog;
+import com.metazz.metazzspace.model.dto.BlogDTO;
+import com.metazz.metazzspace.model.entity.Blog;
 import com.metazz.metazzspace.mapper.BlogMapper;
 import com.metazz.metazzspace.service.IBlogService;
 import org.springframework.stereotype.Service;

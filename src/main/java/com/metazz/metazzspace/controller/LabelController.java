@@ -1,16 +1,14 @@
 package com.metazz.metazzspace.controller;
 
 import com.metazz.metazzspace.common.response.CR;
-import com.metazz.metazzspace.dto.LabelDTO;
-import com.metazz.metazzspace.entity.Category;
-import com.metazz.metazzspace.entity.Label;
+import com.metazz.metazzspace.model.dto.LabelDTO;
+import com.metazz.metazzspace.model.entity.Label;
 import com.metazz.metazzspace.service.ILabelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController

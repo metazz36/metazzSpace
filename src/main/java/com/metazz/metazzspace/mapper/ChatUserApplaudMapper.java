@@ -1,7 +1,7 @@
 package com.metazz.metazzspace.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.metazz.metazzspace.entity.ChatUserApplaud;
+import com.metazz.metazzspace.model.entity.ChatUserApplaud;
 import org.springframework.stereotype.Repository;
 
 @Repository

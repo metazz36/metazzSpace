@@ -1,8 +1,8 @@
 package com.metazz.metazzspace.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.metazz.metazzspace.dto.CategoryDTO;
-import com.metazz.metazzspace.entity.Category;
+import com.metazz.metazzspace.model.dto.CategoryDTO;
+import com.metazz.metazzspace.model.entity.Category;
 
 import java.util.List;
 

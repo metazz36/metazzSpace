@@ -1,8 +1,8 @@
 package com.metazz.metazzspace.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.metazz.metazzspace.dto.BlogDTO;
-import com.metazz.metazzspace.entity.Blog;
+import com.metazz.metazzspace.model.dto.BlogDTO;
+import com.metazz.metazzspace.model.entity.Blog;
 
 public interface IBlogService extends IService<Blog> {
 

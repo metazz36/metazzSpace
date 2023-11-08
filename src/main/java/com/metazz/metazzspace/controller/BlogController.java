@@ -1,15 +1,14 @@
 package com.metazz.metazzspace.controller;
 
 import com.metazz.metazzspace.common.response.CR;
-import com.metazz.metazzspace.dto.BlogDTO;
-import com.metazz.metazzspace.entity.Blog;
+import com.metazz.metazzspace.model.dto.BlogDTO;
+import com.metazz.metazzspace.model.entity.Blog;
 import com.metazz.metazzspace.service.IBlogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 
 @RestController

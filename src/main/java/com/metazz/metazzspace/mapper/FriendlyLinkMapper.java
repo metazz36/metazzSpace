@@ -1,7 +1,7 @@
 package com.metazz.metazzspace.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.metazz.metazzspace.entity.FriendlyLink;
+import com.metazz.metazzspace.model.entity.FriendlyLink;
 import org.springframework.stereotype.Repository;
 
 @Repository
