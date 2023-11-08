@@ -128,5 +128,4 @@ public class Blog implements Serializable {
      */
     private Date deleteTime;
 
-    private static final long serialVersionUID = 1L;
 }

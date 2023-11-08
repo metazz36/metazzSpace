@@ -33,5 +33,4 @@ public class BlogUserApplaud implements Serializable {
      */
     private Date createdTime;
 
-    private static final long serialVersionUID = 1L;
 }

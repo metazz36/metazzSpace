@@ -37,9 +37,9 @@ public class GlobalExceptionHandler {
     private String profile;
 
     public String getMessage(BaseException e,HttpServletRequest request) {
-        String code = "response."+e.getResponseEnum().toString().toLowerCase();
+        String code = e.getResponseEnum().toString();
         //request.getLocale()获取请求头的Accept-Language，如果Accept-Language为空，则取服务器本地的locale
-        ResourceBundle bundle = ResourceBundle.getBundle("message",request.getLocale());
+        ResourceBundle bundle = ResourceBundle.getBundle("messages",request.getLocale());
         String message = bundle.getString(code);
         if(StrUtil.isBlankIfStr(message)) {
             message = e.getErrorMsg();

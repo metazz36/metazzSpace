@@ -68,5 +68,4 @@ public class VisitLog implements Serializable {
      */
     private Date responseTime;
 
-    private static final long serialVersionUID = 1L;
 }

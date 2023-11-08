@@ -27,5 +27,4 @@ public class RoleMenu implements Serializable {
      */
     private Integer menuId;
 
-    private static final long serialVersionUID = 1L;
 }

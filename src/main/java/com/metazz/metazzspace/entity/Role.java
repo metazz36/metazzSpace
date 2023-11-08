@@ -43,5 +43,4 @@ public class Role implements Serializable {
      */
     private Date updatedTime;
 
-    private static final long serialVersionUID = 1L;
 }

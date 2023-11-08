@@ -92,13 +92,6 @@ public class BlogDTO {
     private String source;
 
     /**
-     * 状态(0-无效 1-有效)
-     */
-    @ApiModelProperty(value = "状态(0-无效 1-有效)")
-    @NotNull(message = "状态不能为空")
-    private String status;
-
-    /**
      * 是否原创(0-否 1-是)
      */
     @ApiModelProperty(value = "是否原创(0-否 1-是)")
