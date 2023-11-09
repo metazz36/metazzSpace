@@ -41,7 +41,7 @@ public class BlogController implements BaseController{
     @ApiOperation(value = "根据id查询博客", httpMethod = "GET")
     public CR getBlogById(@RequestParam("id") String id){
         Blog blog = blogService.getBlogById(id);
-        return success();
+        return success(blog);
     }
 
 }
