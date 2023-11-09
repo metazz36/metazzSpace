@@ -1,24 +1,22 @@
 package com.metazz.metazzspace.common.exception;
 
-import com.metazz.metazzspace.common.exception.utils.IResponseEnum;
+import com.metazz.metazzspace.common.enums.ExceptionEnum;
 import lombok.Getter;
 
 @Getter
 public class BaseException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+    private ExceptionEnum exceptionEnum;
 
-    private IResponseEnum responseEnum;
-
-    private Integer errorCode;
+    private String errorCode;
 
     private String errorMsg;
 
-    public BaseException(IResponseEnum responseEnum) {
-        super(responseEnum.getMessage());
-        this.errorCode = responseEnum.getCode();
-        this.errorMsg = responseEnum.getMessage();
-        this.responseEnum = responseEnum;
+    public BaseException(ExceptionEnum exceptionEnum) {
+        super(exceptionEnum.getMessage());
+        this.errorCode = exceptionEnum.getCode();
+        this.errorMsg = exceptionEnum.getMessage();
+        this.exceptionEnum = exceptionEnum;
     }
 
 }

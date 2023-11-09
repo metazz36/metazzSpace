@@ -1,6 +1,6 @@
 package com.metazz.metazzspace.common.response;
 
-import com.metazz.metazzspace.common.constant.GeneralConstant;
+import com.metazz.metazzspace.common.constant.CommonConstant;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
@@ -12,14 +12,14 @@ import org.springframework.http.HttpStatus;
 public class CR<T> extends BaseResponse<T>{
 
     public CR(T t) {
-        setStatus(HttpStatus.OK.value());
-        setCode(GeneralConstant.NORMAL_CODE);
+        setStatus(String.valueOf(HttpStatus.OK.value()));
+        setCode(CommonConstant.NORMAL_CODE);
         super.setData(t);
     }
 
     public CR() {
-        setStatus(HttpStatus.OK.value());
-        setCode(GeneralConstant.NORMAL_CODE);
+        setStatus(String.valueOf(HttpStatus.OK.value()));
+        setCode(CommonConstant.NORMAL_CODE);
         super.setData(null);
     }
 

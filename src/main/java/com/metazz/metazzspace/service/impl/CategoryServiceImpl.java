@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.metazz.metazzspace.common.exception.BusinessException;
+import com.metazz.metazzspace.common.exception.BaseException;
 import com.metazz.metazzspace.model.dto.CategoryDTO;
 import com.metazz.metazzspace.model.entity.Category;
 import com.metazz.metazzspace.common.enums.ExceptionEnum;
@@ -32,7 +32,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         wrapper.eq(Category::getName,categoryDTO.getName());
         List<Category> categories = categoryMapper.selectList(wrapper);
         if(CollectionUtil.isNotEmpty(categories)){
-            throw new BusinessException(ExceptionEnum.CATEGORY_NAME_EXISTS);
+            throw new BaseException(ExceptionEnum.CATEGORY_NAME_EXISTS);
         }
         categoryMapper.insert(BeanUtil.toBean(categoryDTO,Category.class));
     }
@@ -41,7 +41,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     public void deleteCategoryById(String id) {
         Category category = categoryMapper.selectById(id);
         if(!Optional.ofNullable(category).isPresent()){
-            throw new BusinessException(ExceptionEnum.CATEGORY_NOT_EXISTS);
+            throw new BaseException(ExceptionEnum.CATEGORY_NOT_EXISTS);
         }
         categoryMapper.deleteById(id);
     }
@@ -50,13 +50,13 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     public void modifyCategory(CategoryDTO categoryDTO) {
         Category category = categoryMapper.selectById(categoryDTO.getId());
         if(!Optional.ofNullable(category).isPresent()){
-            throw new BusinessException(ExceptionEnum.CATEGORY_NOT_EXISTS);
+            throw new BaseException(ExceptionEnum.CATEGORY_NOT_EXISTS);
         }
         LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Category::getName,categoryDTO.getName());
         List<Category> categories = categoryMapper.selectList(wrapper);
         if(CollectionUtil.isNotEmpty(categories)){
-            throw new BusinessException(ExceptionEnum.CATEGORY_NAME_EXISTS);
+            throw new BaseException(ExceptionEnum.CATEGORY_NAME_EXISTS);
         }
         categoryMapper.updateById(BeanUtil.toBean(categoryDTO,Category.class));
     }

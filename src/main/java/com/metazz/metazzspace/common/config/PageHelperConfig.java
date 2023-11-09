@@ -2,7 +2,6 @@ package com.metazz.metazzspace.common.config;
 
 import com.github.pagehelper.PageHelper;
 import org.springframework.context.annotation.Bean;
-
 import java.util.Properties;
 
 public class PageHelperConfig {

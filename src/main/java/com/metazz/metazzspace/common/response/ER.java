@@ -11,13 +11,13 @@ public class ER extends BaseResponse{
 
     private String errorMsg;
 
-    public ER(Integer errorCode,String errorMsg) {
-        super.setStatus(HttpStatus.OK.value());
+    public ER(String errorCode,String errorMsg) {
+        super.setStatus(String.valueOf(HttpStatus.OK.value()));
         super.setCode(errorCode);
         this.errorMsg = errorMsg;
     }
 
-    public ER(Integer status,Integer errorCode,String errorMsg) {
+    public ER(String status,String errorCode,String errorMsg) {
         super.setStatus(status);
         super.setCode(errorCode);
         this.errorMsg = errorMsg;
