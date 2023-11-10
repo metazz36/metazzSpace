@@ -14,7 +14,7 @@ public class BaseResponse<T> {
     private String status;
 
     /**
-     * 响应状态码(1000是正常，其他为异常)
+     * 响应状态(0000表示正常)
      */
     private String code;
 
