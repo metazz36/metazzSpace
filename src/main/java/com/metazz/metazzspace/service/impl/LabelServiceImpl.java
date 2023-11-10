@@ -3,9 +3,11 @@ package com.metazz.metazzspace.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.metazz.metazzspace.common.exception.BaseException;
 import com.metazz.metazzspace.model.dto.LabelDTO;
+import com.metazz.metazzspace.model.dto.PageDTO;
 import com.metazz.metazzspace.model.entity.Label;
 import com.metazz.metazzspace.common.enums.ExceptionEnum;
 import com.metazz.metazzspace.mapper.LabelMapper;
@@ -34,8 +36,9 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
     }
 
     @Override
-    public List<Label> getAllLabel() {
-        return labelMapper.selectList(null);
+    public Page<Label> getAllLabel(PageDTO pageDTO) {
+        Page<Label> page = new Page<>(pageDTO.getCurrent(), pageDTO.getSize());
+        return labelMapper.selectPage(page,null);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.metazz.metazzspace.controller;
 
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.model.dto.LabelDTO;
+import com.metazz.metazzspace.model.dto.PageDTO;
 import com.metazz.metazzspace.model.entity.Label;
 import com.metazz.metazzspace.service.ILabelService;
 import io.swagger.annotations.Api;
@@ -31,9 +32,8 @@ public class LabelController implements BaseController{
 
     @GetMapping("/getAll")
     @ApiOperation(value = "查询所有标签", httpMethod = "GET")
-    public CR getAllLabel(){
-        List<Label> data = labelService.getAllLabel();
-        return success(data);
+    public CR getAllLabel(@RequestBody PageDTO pageDTO){
+        return success(labelService.getAllLabel(pageDTO));
     }
 
     @GetMapping("/get")

@@ -3,9 +3,11 @@ package com.metazz.metazzspace.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.metazz.metazzspace.common.exception.BaseException;
 import com.metazz.metazzspace.model.dto.CategoryDTO;
+import com.metazz.metazzspace.model.dto.PageDTO;
 import com.metazz.metazzspace.model.entity.Category;
 import com.metazz.metazzspace.common.enums.ExceptionEnum;
 import com.metazz.metazzspace.mapper.CategoryMapper;
@@ -22,8 +24,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     CategoryMapper categoryMapper;
 
     @Override
-    public List<Category> getAllCategory() {
-        return categoryMapper.selectList(null);
+    public Page<Category> getAllCategory(PageDTO pageDTO) {
+        Page<Category> page = new Page<>(pageDTO.getCurrent(), pageDTO.getSize());
+        return categoryMapper.selectPage(page,null);
     }
 
     @Override

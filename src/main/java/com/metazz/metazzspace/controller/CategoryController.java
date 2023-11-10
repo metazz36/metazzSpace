@@ -2,6 +2,7 @@ package com.metazz.metazzspace.controller;
 
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.model.dto.CategoryDTO;
+import com.metazz.metazzspace.model.dto.PageDTO;
 import com.metazz.metazzspace.model.entity.Category;
 import com.metazz.metazzspace.service.ICategoryService;
 import io.swagger.annotations.Api;
@@ -31,9 +32,8 @@ public class CategoryController implements BaseController{
 
     @GetMapping("/getAll")
     @ApiOperation(value = "查询所有分类", httpMethod = "GET")
-    public CR getAllCategory(){
-        List<Category> data = categoryService.getAllCategory();
-        return success(data);
+    public CR getAllCategory(@RequestBody PageDTO pageDTO){
+        return success(categoryService.getAllCategory(pageDTO));
     }
 
     @GetMapping("/get")
