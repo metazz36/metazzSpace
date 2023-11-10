@@ -42,13 +42,6 @@ public class BlogDTO {
     private String image;
 
     /**
-     * 博客字数
-     */
-    @ApiModelProperty(value = "博客字数")
-    @NotNull(message = "博客字数不能为空")
-    private Integer words;
-
-    /**
      * 博客分类ID
      */
     @ApiModelProperty(value = "博客分类ID")
@@ -63,44 +56,15 @@ public class BlogDTO {
     private Integer labelId;
 
     /**
-     * 用户ID
-     */
-    @ApiModelProperty(value = "用户ID")
-    @NotNull(message = "用户ID不能为空")
-    private Integer userId;
-
-    /**
-     * 作者
-     */
-    @ApiModelProperty(value = "作者")
-    @NotNull(message = "作者不能为空")
-    private String author;
-
-    /**
      * 排序字段
      */
     @ApiModelProperty(value = "排序字段")
-    @NotNull(message = "排序字段不能为空")
     private Integer sort;
-
-    /**
-     * 文章出处
-     */
-    @ApiModelProperty(value = "文章出处")
-    @NotNull(message = "文章出处不能为空")
-    private String source;
-
-    /**
-     * 是否原创(0-否 1-是)
-     */
-    @ApiModelProperty(value = "是否原创(0-否 1-是)")
-    @NotNull(message = "是否原创不能为空")
-    private String isOriginal;
 
     /**
      * 是否发布(0-否 1-是)
      */
-    @ApiModelProperty(value = "博客是否发布(0-否 1-是)标题")
+    @ApiModelProperty(value = "博客是否发布(0-否 1-是)")
     @NotNull(message = "博客是否发布不能为空")
     private String isPublish;
 

@@ -5,6 +5,10 @@ import com.metazz.metazzspace.common.response.ER;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,6 +38,16 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 参数校验异常，将校验失败的所有异常组合成一条错误信息
+     */
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ResponseBody
+    public ER handleValidException(MethodArgumentNotValidException e,HttpServletRequest request) {
+        log.error("参数绑定校验异常",e);
+        return wrapperBindingResult(e.getBindingResult(),request);
+    }
+
+    /**
      * 未定义异常
      */
     @ExceptionHandler(value = Exception.class)
@@ -45,6 +59,18 @@ public class GlobalExceptionHandler {
             return new ER(ExceptionEnum.SERVER_ERROR.getCode(),  ExceptionEnum.SERVER_ERROR.getMessage());
         }
         return new ER(ExceptionEnum.SERVER_ERROR.getCode(), e.getMessage());
+    }
+
+    private ER wrapperBindingResult(BindingResult bindingResult, HttpServletRequest request) {
+        StringBuilder sb = new StringBuilder();
+        for(ObjectError error:bindingResult.getAllErrors()) {
+            sb.append(", ");
+            if(error instanceof FieldError) {
+                sb.append(((FieldError) error).getField()).append(": ");
+                sb.append(error.getDefaultMessage() == null ? "":error.getDefaultMessage());
+            }
+        }
+        return new ER(ExceptionEnum.VALID_ERROR.getCode(),ExceptionEnum.VALID_ERROR.getMessage() + " : " + sb.substring(2));
     }
 
 }

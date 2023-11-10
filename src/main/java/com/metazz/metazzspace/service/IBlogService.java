@@ -29,4 +29,5 @@ public interface IBlogService extends IService<Blog> {
      * @return Blog
      */
     Blog getBlogById(String id);
+
 }

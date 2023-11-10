@@ -8,4 +8,6 @@ public class CommonConstant {
 
     public static final String BUSINESS_ERROR = "2000"; // 业务异常
 
+    public static final String VALID_ERROR = "3000"; // 参数校验异常
+
 }
