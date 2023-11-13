@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 public class QiniuController implements BaseController{
 
     @GetMapping("/getUpToken")
-    @ApiOperation(value = "获取覆盖上传凭证", httpMethod = "DELETE")
+    @ApiOperation(value = "获取覆盖上传凭证", httpMethod = "GET")
     public CR getUpToken(@RequestParam(value = "key",required = false) String key){
         return success(QiniuUtil.getToken(key));
     }
 
     @GetMapping("/serverUpload")
-    @ApiOperation(value = "服务器直传", httpMethod = "DELETE")
+    @ApiOperation(value = "服务器直传", httpMethod = "GET")
     public CR serverUpload(@RequestParam(value = "fileName",required = true) String fileName) {
         return success(QiniuUtil.serverUpload(fileName));
     }

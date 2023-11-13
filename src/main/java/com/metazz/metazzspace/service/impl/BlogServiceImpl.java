@@ -33,6 +33,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         }
         Blog blog = BeanUtil.toBean(blogDTO, Blog.class);
         blog.setAuthor("Metazz");
+        blog.setUserId(0);
 
         // TODO 博客内容markdown格式怎么存,怎么展示  -->  待研究
 

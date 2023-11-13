@@ -23,7 +23,7 @@ public class BlogDTO {
      * 博客简介
      */
     @ApiModelProperty(value = "博客简介")
-    @NotNull(message = "博客简介不能为空")
+    @NotBlank(message = "博客简介不能为空")
     @Size(max = 200,message = "博客简介不能超过200字")
     private String summary;
 
@@ -31,14 +31,14 @@ public class BlogDTO {
      * 博客内容
      */
     @ApiModelProperty(value = "博客内容")
-    @NotNull(message = "博客内容不能为空")
+    @NotBlank(message = "博客内容不能为空")
     private String content;
 
     /**
      * 博客图片
      */
     @ApiModelProperty(value = "博客图片")
-    @NotNull(message = "博客图片不能为空")
+    @NotBlank(message = "博客图片不能为空")
     private String image;
 
     /**
@@ -65,14 +65,14 @@ public class BlogDTO {
      * 是否发布(0-否 1-是)
      */
     @ApiModelProperty(value = "博客是否发布(0-否 1-是)")
-    @NotNull(message = "博客是否发布不能为空")
+    @NotBlank(message = "博客是否发布不能为空")
     private String isPublish;
 
     /**
      * 是否开启评论(0-否 1-是)
      */
     @ApiModelProperty(value = "是否开启评论(0-否 1-是)")
-    @NotNull(message = "是否开启评论不能为空")
+    @NotBlank(message = "是否开启评论不能为空")
     private String openComment;
 
 }
