@@ -3,10 +3,9 @@ package com.metazz.metazzspace.controller;
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.common.util.QiniuUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/qiniu")
@@ -15,8 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 @SuppressWarnings("all")
 public class QiniuController implements BaseController{
 
+    @GetMapping("/getUpToken")
+    @ApiOperation(value = "获取覆盖上传凭证", httpMethod = "DELETE")
     public CR getUpToken(@RequestParam(value = "key",required = false) String key){
         return success(QiniuUtil.getToken(key));
+    }
+
+    @GetMapping("/serverUpload")
+    @ApiOperation(value = "服务器直传", httpMethod = "DELETE")
+    public CR serverUpload(@RequestParam(value = "fileName",required = true) String fileName) {
+        return success(QiniuUtil.serverUpload(fileName));
     }
 
 }

@@ -34,11 +34,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         Blog blog = BeanUtil.toBean(blogDTO, Blog.class);
         blog.setAuthor("Metazz");
 
-        // TODO 博客图片怎么存,怎么展示 --> 用云存储
-
         // TODO 博客内容markdown格式怎么存,怎么展示  -->  待研究
 
-        // TODO 计算博客字数
+        // TODO 计算markdown格式的博客的字数   -->  待研究
 
         blog.setWords(0);
 

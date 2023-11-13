@@ -6,8 +6,6 @@ import com.metazz.metazzspace.model.dto.CategoryDTO;
 import com.metazz.metazzspace.model.dto.PageDTO;
 import com.metazz.metazzspace.model.entity.Category;
 
-import java.util.List;
-
 public interface ICategoryService extends IService<Category> {
 
     Page<Category> getAllCategory(PageDTO pageDTO);
