@@ -5,19 +5,13 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-@ApiModel(value = "标签DTO")
-public class LabelDTO {
+@ApiModel(value = "分类新增DTO")
+public class CategoryAddDTO {
 
     /**
-     * 主键ID
+     * 分类名字
      */
-    @ApiModelProperty(value = "主键ID")
-    private Integer id;
-
-    /**
-     * 标签名字
-     */
-    @ApiModelProperty(value = "标签名字")
+    @ApiModelProperty(value = "分类名字")
     private String name;
 
     /**

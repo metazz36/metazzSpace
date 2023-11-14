@@ -8,8 +8,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
-@ApiModel(value = "博客DTO")
-public class BlogDTO {
+@ApiModel(value = "博客新增DTO")
+public class BlogAddDTO {
 
     /**
      * 博客标题
@@ -40,6 +40,12 @@ public class BlogDTO {
     @ApiModelProperty(value = "博客图片")
     @NotBlank(message = "博客图片不能为空")
     private String image;
+
+    /**
+     * 博客字数
+     */
+    @ApiModelProperty(value = "博客字数")
+    private Integer words;
 
     /**
      * 博客分类ID

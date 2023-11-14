@@ -6,8 +6,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.metazz.metazzspace.common.exception.BaseException;
-import com.metazz.metazzspace.model.dto.CategoryDTO;
-import com.metazz.metazzspace.model.dto.PageDTO;
+import com.metazz.metazzspace.model.dto.CategoryAddDTO;
+import com.metazz.metazzspace.model.dto.CategoryModifyDTO;
+import com.metazz.metazzspace.model.dto.PageQueryDTO;
 import com.metazz.metazzspace.model.entity.Category;
 import com.metazz.metazzspace.common.enums.ExceptionEnum;
 import com.metazz.metazzspace.mapper.CategoryMapper;
@@ -24,20 +25,20 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     CategoryMapper categoryMapper;
 
     @Override
-    public Page<Category> getAllCategory(PageDTO pageDTO) {
-        Page<Category> page = new Page<>(pageDTO.getCurrent(), pageDTO.getSize());
+    public Page<Category> getAllCategory(PageQueryDTO pageQueryDTO) {
+        Page<Category> page = new Page<>(pageQueryDTO.getCurrent(), pageQueryDTO.getSize());
         return categoryMapper.selectPage(page,null);
     }
 
     @Override
-    public void addCategory(CategoryDTO categoryDTO) {
+    public void addCategory(CategoryAddDTO categoryAddDTO) {
         LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Category::getName,categoryDTO.getName());
+        wrapper.eq(Category::getName, categoryAddDTO.getName());
         List<Category> categories = categoryMapper.selectList(wrapper);
         if(CollectionUtil.isNotEmpty(categories)){
             throw new BaseException(ExceptionEnum.CATEGORY_NAME_EXISTS);
         }
-        categoryMapper.insert(BeanUtil.toBean(categoryDTO,Category.class));
+        categoryMapper.insert(BeanUtil.toBean(categoryAddDTO,Category.class));
     }
 
     @Override
@@ -50,18 +51,18 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     }
 
     @Override
-    public void modifyCategory(CategoryDTO categoryDTO) {
-        Category category = categoryMapper.selectById(categoryDTO.getId());
+    public void modifyCategory(CategoryModifyDTO categoryModifyDTO) {
+        Category category = categoryMapper.selectById(categoryModifyDTO.getId());
         if(!Optional.ofNullable(category).isPresent()){
             throw new BaseException(ExceptionEnum.CATEGORY_NOT_EXISTS);
         }
         LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Category::getName,categoryDTO.getName());
+        wrapper.eq(Category::getName, categoryModifyDTO.getName());
         List<Category> categories = categoryMapper.selectList(wrapper);
         if(CollectionUtil.isNotEmpty(categories)){
             throw new BaseException(ExceptionEnum.CATEGORY_NAME_EXISTS);
         }
-        categoryMapper.updateById(BeanUtil.toBean(categoryDTO,Category.class));
+        categoryMapper.updateById(BeanUtil.toBean(categoryModifyDTO,Category.class));
     }
 
     @Override

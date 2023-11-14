@@ -1,8 +1,9 @@
 package com.metazz.metazzspace.controller;
 
 import com.metazz.metazzspace.common.response.CR;
-import com.metazz.metazzspace.model.dto.LabelDTO;
-import com.metazz.metazzspace.model.dto.PageDTO;
+import com.metazz.metazzspace.model.dto.LabelAddDTO;
+import com.metazz.metazzspace.model.dto.LabelModifyDTO;
+import com.metazz.metazzspace.model.dto.PageQueryDTO;
 import com.metazz.metazzspace.service.ILabelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,22 +23,10 @@ public class LabelController implements BaseController{
 
     @PostMapping("/add")
     @ApiOperation(value = "新增标签", httpMethod = "POST")
-    public CR addLabel(@RequestBody LabelDTO labelDTO){
-        log.info("新增标签：{}");
-        labelService.addLabel(labelDTO);
+    public CR addLabel(@RequestBody LabelAddDTO labelAddDTO){
+        log.info("新增标签：{}", labelAddDTO);
+        labelService.addLabel(labelAddDTO);
         return success();
-    }
-
-    @GetMapping("/getAll")
-    @ApiOperation(value = "查询所有标签", httpMethod = "GET")
-    public CR getAllLabel(@RequestBody PageDTO pageDTO){
-        return success(labelService.getAllLabel(pageDTO));
-    }
-
-    @GetMapping("/get")
-    @ApiOperation(value = "根据id查询标签", httpMethod = "GET")
-    public CR getLabelById(@RequestParam("id") String id){
-        return success(labelService.getLabelById(id));
     }
 
     @DeleteMapping("/delete")
@@ -49,9 +38,21 @@ public class LabelController implements BaseController{
 
     @PutMapping("/modify")
     @ApiOperation(value = "修改标签", httpMethod = "PUT")
-    public CR modifyLabel(@RequestBody LabelDTO labelDTO){
-        labelService.modifyLabel(labelDTO);
+    public CR modifyLabel(@RequestBody LabelModifyDTO labelModifyDTO){
+        labelService.modifyLabel(labelModifyDTO);
         return success();
+    }
+
+    @GetMapping("/getAll")
+    @ApiOperation(value = "查询所有标签", httpMethod = "GET")
+    public CR getAllLabel(@RequestBody PageQueryDTO pageQueryDTO){
+        return success(labelService.getAllLabel(pageQueryDTO));
+    }
+
+    @GetMapping("/get")
+    @ApiOperation(value = "根据id查询标签", httpMethod = "GET")
+    public CR getLabelById(@RequestParam("id") String id){
+        return success(labelService.getLabelById(id));
     }
 
 }

@@ -5,8 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-@ApiModel(value = "分类DTO")
-public class CategoryDTO {
+@ApiModel(value = "分类修改DTO")
+public class CategoryModifyDTO {
 
     /**
      * 主键ID
