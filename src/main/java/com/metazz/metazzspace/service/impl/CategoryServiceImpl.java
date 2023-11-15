@@ -60,7 +60,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         wrapper.eq(Category::getName, categoryModifyDTO.getName());
         List<Category> categories = categoryMapper.selectList(wrapper);
         if(CollectionUtil.isNotEmpty(categories)){
-            throw new BaseException(ExceptionEnum.CATEGORY_NAME_EXISTS);
+            if(categoryModifyDTO.getId() != categories.get(0).getId()){
+                throw new BaseException(ExceptionEnum.CATEGORY_NAME_EXISTS);
+            }
         }
         categoryMapper.updateById(BeanUtil.toBean(categoryModifyDTO,Category.class));
     }

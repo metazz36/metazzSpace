@@ -65,7 +65,9 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
         wrapper.eq(Label::getName, labelModifyDTO.getName());
         List<Label> labels = labelMapper.selectList(wrapper);
         if(CollectionUtil.isNotEmpty(labels)){
-            throw new BaseException(ExceptionEnum.LABEL_NAME_EXISTS);
+            if(labelModifyDTO.getId() != labels.get(0).getId()){
+                throw new BaseException(ExceptionEnum.LABEL_NAME_EXISTS);
+            }
         }
         labelMapper.updateById(BeanUtil.toBean(labelModifyDTO,Label.class));
     }
