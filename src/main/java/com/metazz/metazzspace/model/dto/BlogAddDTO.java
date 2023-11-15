@@ -23,7 +23,6 @@ public class BlogAddDTO {
      * 博客简介
      */
     @ApiModelProperty(value = "博客简介")
-    @NotBlank(message = "博客简介不能为空")
     @Size(max = 200,message = "博客简介不能超过200字")
     private String summary;
 

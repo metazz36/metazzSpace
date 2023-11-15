@@ -47,8 +47,8 @@ public class BlogController implements BaseController{
         return success();
     }
 
-    @GetMapping("/getByPage")
-    @ApiOperation(value = "分页查询博客信息", httpMethod = "GET")
+    @PostMapping("/getByPage")
+    @ApiOperation(value = "分页查询博客信息", httpMethod = "POST")
     public CR getBlogByPage(@RequestBody BlogQueryDTO blogQueryDTO){
         return success(blogService.getBlogByPage(blogQueryDTO));
     }

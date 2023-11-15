@@ -6,12 +6,15 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.metazz.metazzspace.common.exception.BaseException;
+import com.metazz.metazzspace.model.dto.BlogQueryDTO;
 import com.metazz.metazzspace.model.dto.LabelAddDTO;
 import com.metazz.metazzspace.model.dto.LabelModifyDTO;
 import com.metazz.metazzspace.model.dto.PageQueryDTO;
+import com.metazz.metazzspace.model.entity.Blog;
 import com.metazz.metazzspace.model.entity.Label;
 import com.metazz.metazzspace.common.enums.ExceptionEnum;
 import com.metazz.metazzspace.mapper.LabelMapper;
+import com.metazz.metazzspace.service.IBlogService;
 import com.metazz.metazzspace.service.ILabelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,10 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
 
     @Autowired
     LabelMapper labelMapper;
+
+    @Autowired
+    IBlogService blogService;
+
     @Override
     public void addLabel(LabelAddDTO labelAddDTO) {
         LambdaQueryWrapper<Label> wrapper = new LambdaQueryWrapper<>();
@@ -51,6 +58,11 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
         Label label = labelMapper.selectById(id);
         if(!Optional.ofNullable(label).isPresent()){
             throw new BaseException(ExceptionEnum.LABEL_NOT_EXISTS);
+        }
+        // 该标签关联了博客，不允许删除
+        Page<Blog> blogByPage = blogService.getBlogByPage(BlogQueryDTO.builder().current(1).size(5).labelId(Integer.valueOf(id)).categoryId(0).build());
+        if(CollectionUtil.isNotEmpty(blogByPage.getRecords())){
+            throw new BaseException(ExceptionEnum.LABEL_LINKED_BLOG);
         }
         labelMapper.deleteById(id);
     }

@@ -14,8 +14,12 @@ import com.metazz.metazzspace.model.dto.BlogQueryDTO;
 import com.metazz.metazzspace.model.entity.Blog;
 import com.metazz.metazzspace.mapper.BlogMapper;
 import com.metazz.metazzspace.service.IBlogService;
+import com.metazz.metazzspace.service.IBlogUserApplaudService;
+import com.metazz.metazzspace.service.IBlogUserCollectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +28,12 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
 
     @Autowired
     BlogMapper blogMapper;
+
+    @Autowired
+    IBlogUserCollectService blogUserCollectService;
+
+    @Autowired
+    IBlogUserApplaudService blogUserApplaudService;
 
     @Override
     public void addBlog(BlogAddDTO blogAddDTO) {
@@ -36,18 +46,28 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         }
         Blog blog = BeanUtil.toBean(blogAddDTO, Blog.class);
         blog.setAuthor("Metazz");
-        blog.setUserId(0);
+        blog.setUserId(1);
+        blog.setIsOriginal("1");
+        blog.setSource("原创");
         this.save(blog);
     }
 
     @Override
     public void deleteBlog(String id) {
-        Blog blog = blogMapper.selectById(id);
-        if(!Optional.ofNullable(blog).isPresent()){
+        if(!Optional.ofNullable(blogMapper.selectById(id)).isPresent()){
             throw new BaseException(ExceptionEnum.BLOG_NOT_EXISTS);
         }
-        // TODO 删除关联数据(用户收藏博客,用户点赞博客,博客评论)
-        blogMapper.deleteById(id);
+        // 1、删除博客(采用伪删除)
+        Blog blog = new Blog();
+        blog.setId(Integer.valueOf(id));
+        blog.setStatus("0");
+        blog.setDeleteTime(new Date());
+        blogMapper.updateById(blog);
+        // 2、删除关联数据 —— 用户收藏博客
+        blogUserCollectService.deleteByBlogId(Integer.valueOf(id));
+        // 3、删除关联数据 —— 用户点赞博客
+        blogUserApplaudService.deleteByBlogId(Integer.valueOf(id));
+        // TODO 4、删除关联数据 —— 博客评论
     }
 
     @Override
@@ -73,7 +93,19 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
 
     @Override
     public void modifyBlog(BlogModifyDTO blogModifyDTO) {
-
+        Blog blog = blogMapper.selectById(blogModifyDTO.getId());
+        if(!Optional.ofNullable(blog).isPresent()){
+            throw new BaseException(ExceptionEnum.BLOG_NOT_EXISTS);
+        }
+        LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Blog::getTitle,blogModifyDTO.getTitle());
+        List<Blog> blogs = blogMapper.selectList(wrapper);
+        if(CollectionUtil.isNotEmpty(blogs)){
+            if(blogModifyDTO.getId() != blogs.get(0).getId()){
+                throw new BaseException(ExceptionEnum.BLOG_TITLE_EXISTS);
+            }
+        }
+        blogMapper.updateById(BeanUtil.toBean(blogModifyDTO,Blog.class));
     }
 
 }

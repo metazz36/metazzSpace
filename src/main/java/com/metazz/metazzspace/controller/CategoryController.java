@@ -45,8 +45,8 @@ public class CategoryController implements BaseController{
         return success();
     }
 
-    @GetMapping("/getAll")
-    @ApiOperation(value = "查询所有分类", httpMethod = "GET")
+    @PostMapping("/getAll")
+    @ApiOperation(value = "查询所有分类", httpMethod = "POST")
     public CR getAllCategory(@RequestBody PageQueryDTO pageQueryDTO){
         return success(categoryService.getAllCategory(pageQueryDTO));
     }

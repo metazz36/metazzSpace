@@ -26,6 +26,10 @@ public enum ExceptionEnum{
 
     LABEL_NOT_EXISTS(CommonConstant.BUSINESS_ERROR,"标签不存在"),
 
+    CATEGORY_LINKED_BLOG(CommonConstant.BUSINESS_ERROR,"该分类关联了博客，无法删除"),
+
+    LABEL_LINKED_BLOG(CommonConstant.BUSINESS_ERROR,"该标签关联了博客，无法删除");
+
     ;
 
     private String code;

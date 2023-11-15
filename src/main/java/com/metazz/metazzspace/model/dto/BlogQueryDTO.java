@@ -2,10 +2,12 @@ package com.metazz.metazzspace.model.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @ApiModel(value = "博客查询DTO")
+@Builder
 public class BlogQueryDTO {
 
     @ApiModelProperty(value = "当前页")

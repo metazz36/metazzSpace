@@ -43,8 +43,8 @@ public class LabelController implements BaseController{
         return success();
     }
 
-    @GetMapping("/getAll")
-    @ApiOperation(value = "查询所有标签", httpMethod = "GET")
+    @PostMapping("/getAll")
+    @ApiOperation(value = "查询所有标签", httpMethod = "POST")
     public CR getAllLabel(@RequestBody PageQueryDTO pageQueryDTO){
         return success(labelService.getAllLabel(pageQueryDTO));
     }
