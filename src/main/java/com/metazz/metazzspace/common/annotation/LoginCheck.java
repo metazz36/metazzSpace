@@ -5,12 +5,11 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface SysLog {
+public @interface LoginCheck {
 
     /**
-     * 操作名称
+     * 用户类型(0-普通用户  1-管理员)
      */
-    String operateName() default "";
+    String useType() default "0";
 
 }
-

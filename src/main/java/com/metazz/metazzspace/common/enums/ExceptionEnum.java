@@ -42,6 +42,12 @@ public enum ExceptionEnum{
 
     USER_STATUS_DISABLE(CommonConstant.BUSINESS_ERROR,"用户状态无效"),
 
+    NOT_LOGIN(CommonConstant.BUSINESS_ERROR, "未登陆，请登陆后再进行操作"),
+
+    LOGIN_EXPIRED(CommonConstant.BUSINESS_ERROR, "登录已过期，请重新登陆"),
+
+    PERMISSION_DENIED(CommonConstant.BUSINESS_ERROR, "权限不足"),
+
 
     ;
 

@@ -25,12 +25,15 @@ public class CommonConstant {
     public static final String USER_TOKEN = "user_token_"; // Token前缀
 
     /**
+     * 请求头Token键
+     */
+    public static final String TOKEN_HEADER = "Authorization";
+
+    /**
      * Redis缓存过期时间
      */
     public static final long USER_CODE_EXPIRE = 2; // 验证码过期时间，单位分钟
     public static final long USER_TOKEN_EXPIRE = 7; // Token过期时间，单位天
-
-
 
     /**
      * 加密密钥

@@ -1,5 +1,6 @@
 package com.metazz.metazzspace.controller;
 
+import com.metazz.metazzspace.common.annotation.LoginCheck;
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.model.dto.CategoryAddDTO;
 import com.metazz.metazzspace.model.dto.CategoryModifyDTO;
@@ -23,6 +24,7 @@ public class CategoryController implements BaseController{
 
     @PostMapping("/add")
     @ApiOperation(value = "新增分类", httpMethod = "POST")
+    @LoginCheck(useType = "1")
     public CR addCategory(@RequestBody CategoryAddDTO categoryAddDTO){
         log.info("新增分类：{}", categoryAddDTO);
         categoryService.addCategory(categoryAddDTO);
@@ -31,6 +33,7 @@ public class CategoryController implements BaseController{
 
     @DeleteMapping("/delete")
     @ApiOperation(value = "根据id删除分类", httpMethod = "DELETE")
+    @LoginCheck(useType = "1")
     public CR deleteCategoryById(@RequestParam("id") String id){
         log.info("根据id删除分类：{}",id);
         categoryService.deleteCategoryById(id);
@@ -39,6 +42,7 @@ public class CategoryController implements BaseController{
 
     @PutMapping("/modify")
     @ApiOperation(value = "修改分类", httpMethod = "PUT")
+    @LoginCheck(useType = "1")
     public CR modifyCategory(@RequestBody CategoryModifyDTO categoryModifyDTO){
         log.info("修改分类：{}", categoryModifyDTO);
         categoryService.modifyCategory(categoryModifyDTO);

@@ -96,9 +96,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             throw new BaseException(ExceptionEnum.USER_STATUS_DISABLE);
         }
         // 生成token,保存到Redis，并返回给前端（前端请求头携带此token）
-        String token = UUID.randomUUID().toString().replaceAll("-", "");
-        redisTemplate.opsForValue().set(CommonConstant.USER_TOKEN + token,user,CommonConstant.USER_TOKEN_EXPIRE,TimeUnit.DAYS);
-        return token;
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        redisTemplate.opsForValue().set(CommonConstant.USER_TOKEN + uuid,user,CommonConstant.USER_TOKEN_EXPIRE,TimeUnit.DAYS);
+        return CommonConstant.USER_TOKEN + uuid;
     }
 
 }
