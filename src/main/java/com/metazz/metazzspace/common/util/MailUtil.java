@@ -24,6 +24,8 @@ public class MailUtil {
 
     public static final String imMail = "你收到来自 %s 的消息";
 
+    public static final String commonSubject = "您有一封来自 MetazzSpace 的回执！";
+
     public static final String userCodeFormat = "%s为本次验证的验证码，请在2分钟内完成验证。为保证账号安全，请勿泄漏此验证码。";
 
     /**
@@ -63,14 +65,24 @@ public class MailUtil {
             "            </a>\n" +
             "        </div>\n" +
             "        <div style=\"margin-top: 20px;font-size: 12px;color: #00000045\">\n" +
-            "            此邮件由 %s 自动发出，直接回复无效（一天最多发送 " + CommonConstant.COMMENT_IM_MAIL_COUNT + " 条通知邮件），退订请联系站长。\n" +
+            "            此邮件由 %s 自动发出，直接回复无效。\n" +
             "        </div>\n" +
             "    </div>\n" +
             "</div>";
 
+    public String getCodeMail(int i) {
+        String webName = "MetazzSpace";
+        return String.format(MailUtil.mailText,
+                webName,
+                String.format(MailUtil.imMail, "Metazz"),
+                "Metazz",
+                String.format(MailUtil.userCodeFormat, i),
+                "",
+                webName);
+    }
 
     public void sendMailMessage(List<String> to, String subject, String text) {
-        log.info("发送邮件===================");
+        log.info("发送邮件");
         log.info("to：{}", JSON.toJSONString(to));
         log.info("subject：{}", subject);
         log.info("text：{}", text);
@@ -87,13 +99,11 @@ public class MailUtil {
             mimeMessageHelper.setText(text, true);
             //邮件发送时间
             mimeMessageHelper.setSentDate(new Date());
-
             //发送邮件
             mailSender.send(mimeMessageHelper.getMimeMessage());
-
-            log.info("发送成功==================");
+            log.info("发送成功");
         } catch (MessagingException e) {
-            log.info("发送失败==================");
+            log.info("发送失败");
             log.error(e.getMessage());
         }
     }

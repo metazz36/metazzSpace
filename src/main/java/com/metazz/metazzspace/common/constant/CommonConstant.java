@@ -19,8 +19,23 @@ public class CommonConstant {
     public static final String DOWNLOAD_URL = "http://s3w87as9r.hn-bkt.clouddn.com/";
 
     /**
-     * 评论和IM邮件发送次数
+     * Redis缓存前缀
      */
-    public static final int COMMENT_IM_MAIL_COUNT = 1;
+    public static final String USER_CODE = "user_code_"; // 验证码前缀
+    public static final String USER_TOKEN = "user_token_"; // Token前缀
+
+    /**
+     * Redis缓存过期时间
+     */
+    public static final long USER_CODE_EXPIRE = 2; // 验证码过期时间，单位分钟
+    public static final long USER_TOKEN_EXPIRE = 7; // Token过期时间，单位天
+
+
+
+    /**
+     * 加密密钥
+     */
+    public static final String PASSWORD_KEY = "metazz36metazz36";
+
 
 }

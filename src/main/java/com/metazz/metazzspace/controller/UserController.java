@@ -1,6 +1,7 @@
 package com.metazz.metazzspace.controller;
 
 import com.metazz.metazzspace.common.response.CR;
+import com.metazz.metazzspace.model.dto.UserLoginDTO;
 import com.metazz.metazzspace.model.dto.UserRegisterDTO;
 import com.metazz.metazzspace.service.IUserService;
 import io.swagger.annotations.Api;
@@ -19,19 +20,27 @@ public class UserController implements BaseController{
     @Autowired
     IUserService userService;
 
+    @GetMapping("/getCode")
+    @ApiOperation(value = "获取验证码", httpMethod = "GET")
+    public CR getCode(@RequestParam("email") String email){
+        log.info("获取验证码: {}",email);
+        userService.getCode(email);
+        return success();
+    }
+
     @PostMapping("/register")
     @ApiOperation(value = "用户注册", httpMethod = "POST")
     public CR registerUser(@RequestBody UserRegisterDTO userRegisterDTO) {
         log.info("用户注册: {}",userRegisterDTO);
-        return BaseController.super.success();
+        userService.registerUser(userRegisterDTO);
+        return success();
     }
 
-    @GetMapping("/getCode")
-    @ApiOperation(value = "获取验证码", httpMethod = "GET")
-    public CR getCode(@RequestParam("emailOrPhone") String emailOrPhone){
-        log.info("获取验证码: {}",emailOrPhone);
-        userService.getCode(emailOrPhone);
-        return success();
+    @PostMapping("/login")
+    @ApiOperation(value = "用户登录", httpMethod = "POST")
+    public CR loginUser(@RequestBody UserLoginDTO userLoginDTO) {
+        log.info("用户登录: {}",userLoginDTO);
+        return success(userService.loginUser(userLoginDTO));
     }
 
 }

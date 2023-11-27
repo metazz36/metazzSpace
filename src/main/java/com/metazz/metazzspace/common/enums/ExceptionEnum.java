@@ -28,7 +28,20 @@ public enum ExceptionEnum{
 
     CATEGORY_LINKED_BLOG(CommonConstant.BUSINESS_ERROR,"该分类关联了博客，无法删除"),
 
-    LABEL_LINKED_BLOG(CommonConstant.BUSINESS_ERROR,"该标签关联了博客，无法删除");
+    LABEL_LINKED_BLOG(CommonConstant.BUSINESS_ERROR,"该标签关联了博客，无法删除"),
+
+    USER_NAME_ERROR(CommonConstant.BUSINESS_ERROR,"用户名不能包含@"),
+
+    CODE_ERROR(CommonConstant.BUSINESS_ERROR,"验证码错误"),
+
+    EMAIL_HAS_BEEN_REGISTERED(CommonConstant.BUSINESS_ERROR,"邮箱已被注册"),
+
+    USER_NAME_HAS_BEEN_REGISTERED(CommonConstant.BUSINESS_ERROR,"用户名已被注册"),
+
+    ACCOUNT_OR_PASSWORD_ERROR(CommonConstant.BUSINESS_ERROR,"账号或密码错误"),
+
+    USER_STATUS_DISABLE(CommonConstant.BUSINESS_ERROR,"用户状态无效"),
+
 
     ;
 
