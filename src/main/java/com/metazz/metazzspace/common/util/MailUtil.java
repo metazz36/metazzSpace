@@ -22,6 +22,10 @@ public class MailUtil {
     @Value("${spring.mail.username}")
     private String sendMailer;
 
+    public static final String imMail = "你收到来自 %s 的消息";
+
+    public static final String userCodeFormat = "%s为本次验证的验证码，请在2分钟内完成验证。为保证账号安全，请勿泄漏此验证码。";
+
     /**
      * 1. 网站名称
      * 2. 邮件类型
@@ -54,7 +58,7 @@ public class MailUtil {
             "            </div>\n" +
             "            %s\n" +
             "            <a style=\"width: 150px;height: 38px;background: #ef859d38;border-radius: 32px;display: flex;align-items: center;justify-content: center;text-decoration: none;margin: 40px auto 0\"\n" +
-            "               href=\"https://poetize.cn\" target=\"_blank\">\n" +
+            "               href=\"https://bilibili.com\" target=\"_blank\">\n" +
             "                <span style=\"color: #DB214B\">有朋自远方来</span>\n" +
             "            </a>\n" +
             "        </div>\n" +

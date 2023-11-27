@@ -2,11 +2,11 @@ package com.metazz.metazzspace.controller;
 
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.model.dto.UserRegisterDTO;
+import com.metazz.metazzspace.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController implements BaseController{
 
     @Autowired
-    RedisTemplate<String,Object> redisTemplate;
+    IUserService userService;
 
     @PostMapping("/register")
     @ApiOperation(value = "用户注册", httpMethod = "POST")
@@ -30,7 +30,7 @@ public class UserController implements BaseController{
     @ApiOperation(value = "获取验证码", httpMethod = "GET")
     public CR getCode(@RequestParam("emailOrPhone") String emailOrPhone){
         log.info("获取验证码: {}",emailOrPhone);
-        redisTemplate.opsForValue().set(emailOrPhone,"000001");
+        userService.getCode(emailOrPhone);
         return success();
     }
 
