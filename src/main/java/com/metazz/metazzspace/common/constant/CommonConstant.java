@@ -33,7 +33,7 @@ public class CommonConstant {
      * Redis缓存过期时间
      */
     public static final long USER_CODE_EXPIRE = 2; // 验证码过期时间，单位分钟
-    public static final long USER_TOKEN_EXPIRE = 7; // Token过期时间，单位天
+    public static final long USER_TOKEN_EXPIRE = 5; // Token过期时间，单位天
 
     /**
      * 加密密钥

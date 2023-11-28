@@ -13,8 +13,9 @@ import org.springframework.stereotype.Component;
 public class SysLogAspect {
 
     @Around("@annotation(sysLog)")
-    public void aroundLog(ProceedingJoinPoint point, SysLog sysLog) throws Throwable {
+    public Object aroundLog(ProceedingJoinPoint point, SysLog sysLog) throws Throwable {
 
+        return point.proceed();
     }
 
 }

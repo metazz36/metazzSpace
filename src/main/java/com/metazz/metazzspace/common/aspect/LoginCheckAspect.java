@@ -1,5 +1,6 @@
 package com.metazz.metazzspace.common.aspect;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.metazz.metazzspace.common.annotation.LoginCheck;
 import com.metazz.metazzspace.common.constant.CommonConstant;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 @Aspect
 @Component
@@ -28,13 +28,14 @@ public class LoginCheckAspect {
     RedisTemplate<String,Object> redisTemplate;
 
     @Around("@annotation(loginCheck)")
-    public void aroundLog(ProceedingJoinPoint point, LoginCheck loginCheck) throws Throwable {
+    public Object aroundLog(ProceedingJoinPoint point, LoginCheck loginCheck) throws Throwable {
         String token = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader(CommonConstant.TOKEN_HEADER);
         if(StrUtil.isBlank(token)){
             // 未登陆
             throw new BaseException(ExceptionEnum.NOT_LOGIN);
         }
-        User user = (User) redisTemplate.opsForValue().get(token);
+        Object o = redisTemplate.opsForValue().get(token);
+        User user = BeanUtil.toBean(o, User.class);
         if(!Optional.ofNullable(user).isPresent()){
             // 登录已过期
             throw new BaseException(ExceptionEnum.LOGIN_EXPIRED);
@@ -43,8 +44,6 @@ public class LoginCheckAspect {
             // 权限不足
             throw new BaseException(ExceptionEnum.PERMISSION_DENIED);
         }
-        // 重置过期时间
-        redisTemplate.opsForValue().set(token,user,CommonConstant.USER_TOKEN_EXPIRE, TimeUnit.DAYS);
+        return point.proceed();
     }
-
 }
