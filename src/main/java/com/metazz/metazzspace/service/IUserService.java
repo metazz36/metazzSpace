@@ -1,10 +1,8 @@
 package com.metazz.metazzspace.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.metazz.metazzspace.model.dto.ModifyPasswordDTO;
-import com.metazz.metazzspace.model.dto.UserLoginDTO;
-import com.metazz.metazzspace.model.dto.UserModifyDTO;
-import com.metazz.metazzspace.model.dto.UserRegisterDTO;
+import com.metazz.metazzspace.model.dto.*;
 import com.metazz.metazzspace.model.entity.User;
 
 public interface IUserService extends IService<User> {
@@ -24,5 +22,7 @@ public interface IUserService extends IService<User> {
     void changeUserStatus(Integer userId, String status);
 
     void changeUserCommentStatus(Integer userId, String commentStatus);
+
+    Page<User> getUserByPage(UserQueryDTO userQueryDTO);
 
 }

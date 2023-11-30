@@ -1,7 +1,10 @@
 package com.metazz.metazzspace.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.metazz.metazzspace.common.constant.CommonConstant;
 import com.metazz.metazzspace.common.enums.CommonEnum;
@@ -10,10 +13,7 @@ import com.metazz.metazzspace.common.exception.BaseException;
 import com.metazz.metazzspace.common.util.MailUtil;
 import com.metazz.metazzspace.common.util.MetazzUtil;
 import com.metazz.metazzspace.common.util.UserUtil;
-import com.metazz.metazzspace.model.dto.ModifyPasswordDTO;
-import com.metazz.metazzspace.model.dto.UserLoginDTO;
-import com.metazz.metazzspace.model.dto.UserModifyDTO;
-import com.metazz.metazzspace.model.dto.UserRegisterDTO;
+import com.metazz.metazzspace.model.dto.*;
 import com.metazz.metazzspace.model.entity.User;
 import com.metazz.metazzspace.mapper.UserMapper;
 import com.metazz.metazzspace.service.IUserService;
@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -34,6 +35,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Autowired
     MailUtil mailUtil;
+
+    @Autowired
+    UserMapper userMapper;
 
     @Override
     public void getCode(String email,String purpose) {
@@ -199,6 +203,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         String token = (String) redisTemplate.opsForHash().get(CommonConstant.USERID_TOKEN, String.valueOf(userId));
         redisTemplate.opsForHash().delete(CommonConstant.USERID_TOKEN,String.valueOf(userId));
         redisTemplate.delete(token);
+    }
+
+    @Override
+    public Page<User> getUserByPage(UserQueryDTO userQueryDTO) {
+        Page<User> page = new Page<>(userQueryDTO.getCurrent(), userQueryDTO.getSize());
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        if (StrUtil.isNotBlank(userQueryDTO.getUserName())) {
+            wrapper.like(User::getUserName,userQueryDTO.getUserName());
+        }
+        if (StrUtil.isNotBlank(userQueryDTO.getStatus())) {
+            wrapper.eq(User::getStatus,userQueryDTO.getStatus());
+        }
+        if (StrUtil.isNotBlank(userQueryDTO.getCommentStatus())) {
+            wrapper.eq(User::getCommentStatus,userQueryDTO.getCommentStatus());
+        }
+        Page<User> userPage = userMapper.selectPage(page, wrapper);
+        if(CollectionUtil.isNotEmpty(userPage.getRecords())){
+            userPage.getRecords().stream().forEach(user -> user.setPassword(null));
+        }
+        return userPage;
     }
 
 }

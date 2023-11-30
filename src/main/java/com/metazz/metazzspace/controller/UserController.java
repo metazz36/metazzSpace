@@ -2,10 +2,7 @@ package com.metazz.metazzspace.controller;
 
 import com.metazz.metazzspace.common.annotation.LoginCheck;
 import com.metazz.metazzspace.common.response.CR;
-import com.metazz.metazzspace.model.dto.ModifyPasswordDTO;
-import com.metazz.metazzspace.model.dto.UserLoginDTO;
-import com.metazz.metazzspace.model.dto.UserModifyDTO;
-import com.metazz.metazzspace.model.dto.UserRegisterDTO;
+import com.metazz.metazzspace.model.dto.*;
 import com.metazz.metazzspace.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -85,6 +82,12 @@ public class UserController implements BaseController{
         log.info("修改用户评论状态: id:{},状态:{}(0-禁言 1-正常)",userId,commentStatus);
         userService.changeUserCommentStatus(userId,commentStatus);
         return success();
+    }
+
+    @PostMapping("getByPage")
+    @ApiOperation(value = "分页查询用户信息", httpMethod = "POST")
+    public CR getUserByPage(@RequestBody UserQueryDTO userQueryDTO){
+        return success(userService.getUserByPage(userQueryDTO));
     }
 
 }
