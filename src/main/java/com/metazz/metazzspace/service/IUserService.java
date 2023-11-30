@@ -21,4 +21,8 @@ public interface IUserService extends IService<User> {
 
     void modifyPassword(ModifyPasswordDTO modifyPasswordDTO);
 
+    void changeUserStatus(Integer userId, String status);
+
+    void changeUserCommentStatus(Integer userId, String commentStatus);
+
 }

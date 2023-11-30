@@ -39,7 +39,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public void getCode(String email,String purpose) {
         int i = new Random().nextInt(900000) + 100000;
         log.info(email + "的验证码为: {}",i);
-        // 将验证码保存到Redis中
+        // 逻辑校验(0-用户注册，1-密码修改)
+        if("0".equals(purpose)){
+            Integer emailCount = lambdaQuery().eq(User::getEmail,email).count();
+            if(emailCount != 0){
+                // 邮箱已被注册
+                throw new BaseException(ExceptionEnum.EMAIL_HAS_BEEN_REGISTERED);
+            }
+        }else{
+            User user = lambdaQuery().eq(User::getEmail, email).one();
+            if (!Optional.ofNullable(user).isPresent()) {
+                // 邮箱没有关联的账号
+                throw new BaseException(ExceptionEnum.MAIL_HAS_NO_ASSOCIATED_ACCOUNT);
+            }
+        }
+        // 将验证码保存到Redis中(0-用户注册，1-密码修改)
         if("0".equals(purpose)){
             redisTemplate.opsForValue().set(CommonConstant.USER_REGISTER_CODE + email,String.valueOf(i),CommonConstant.CODE_EXPIRE, TimeUnit.MINUTES);
         }else{
@@ -100,17 +114,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         // 将密码隐藏，再放到缓存中
         user.setPassword(null);
+        // 若有未过期的token，从Redis删除
+        String token = (String) redisTemplate.opsForHash().get(CommonConstant.USERID_TOKEN, String.valueOf(user.getId()));
+        if(StrUtil.isNotBlank(token)){
+            redisTemplate.delete(token);
+        }
         // 生成token,保存到Redis，并返回给前端（前端请求头携带此token）
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         redisTemplate.opsForValue().set(CommonConstant.USER_TOKEN + uuid,user,CommonConstant.USER_TOKEN_EXPIRE,TimeUnit.DAYS);
+        redisTemplate.opsForHash().put(CommonConstant.USERID_TOKEN,String.valueOf(user.getId()),CommonConstant.USER_TOKEN + uuid);
         return CommonConstant.USER_TOKEN + uuid;
     }
 
     @Override
     public void exit() {
-        // 将token从Redis移除
-        String token = MetazzUtil.getToken();
-        redisTemplate.delete(token);
+        redisTemplate.opsForHash().delete(CommonConstant.USERID_TOKEN,String.valueOf(UserUtil.getUser().getId()));
+        redisTemplate.delete(MetazzUtil.getToken());
     }
 
     @Override
@@ -164,6 +183,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         String password = new String(SecureUtil.aes(CommonConstant.PASSWORD_KEY.getBytes(StandardCharsets.UTF_8)).encrypt(modifyPasswordDTO.getPassword()));;
         one.setPassword(password);
         updateById(one);
+    }
+
+    @Override
+    public void changeUserStatus(Integer userId, String status) {
+        lambdaUpdate().eq(User::getId, userId).set(User::getStatus,status).update();
+        String token = (String) redisTemplate.opsForHash().get(CommonConstant.USERID_TOKEN, String.valueOf(userId));
+        redisTemplate.opsForHash().delete(CommonConstant.USERID_TOKEN,String.valueOf(userId));
+        redisTemplate.delete(token);
+    }
+
+    @Override
+    public void changeUserCommentStatus(Integer userId, String commentStatus) {
+        lambdaUpdate().eq(User::getId, userId).set(User::getCommentStatus,commentStatus).update();
+        String token = (String) redisTemplate.opsForHash().get(CommonConstant.USERID_TOKEN, String.valueOf(userId));
+        redisTemplate.opsForHash().delete(CommonConstant.USERID_TOKEN,String.valueOf(userId));
+        redisTemplate.delete(token);
     }
 
 }

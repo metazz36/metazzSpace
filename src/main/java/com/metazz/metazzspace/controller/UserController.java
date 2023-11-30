@@ -26,7 +26,7 @@ public class UserController implements BaseController{
     @GetMapping("/getCode")
     @ApiOperation(value = "获取验证码", httpMethod = "GET")
     public CR getCode(@RequestParam("email") String email,@RequestParam("purpose") String purpose){
-        log.info("获取验证码: 邮箱:{}，用途:{}(0-用户注册，1-密码修改)",email,purpose);
+        log.info("获取验证码: 邮箱:{},用途:{}(0-用户注册，1-密码修改)",email,purpose);
         userService.getCode(email,purpose);
         return success();
     }
@@ -46,6 +46,14 @@ public class UserController implements BaseController{
         return success(userService.loginUser(userLoginDTO));
     }
 
+    @PostMapping("/modifyPassword")
+    @ApiOperation(value = "密码修改", httpMethod = "POST")
+    public CR modifyPassword(@RequestBody ModifyPasswordDTO modifyPasswordDTO) {
+        log.info("密码修改: {}", modifyPasswordDTO);
+        userService.modifyPassword(modifyPasswordDTO);
+        return success();
+    }
+
     @LoginCheck
     @PostMapping("/modifyUser")
     @ApiOperation(value = "用户信息修改", httpMethod = "POST")
@@ -56,19 +64,26 @@ public class UserController implements BaseController{
     }
 
     @LoginCheck
-    @PostMapping("/modifyPassword")
-    @ApiOperation(value = "密码修改", httpMethod = "POST")
-    public CR modifyPassword(@RequestBody ModifyPasswordDTO modifyPasswordDTO) {
-        log.info("密码修改: {}", modifyPasswordDTO);
-        userService.modifyPassword(modifyPasswordDTO);
-        return success();
-    }
-
-    @LoginCheck
     @GetMapping("/logout")
     @ApiOperation(value = "用户退出", httpMethod = "GET")
     public CR exit() {
         userService.exit();
+        return success();
+    }
+
+    @GetMapping("/changeUserStatus")
+    @ApiOperation(value = "修改用户状态", httpMethod = "GET")
+    public CR changeUserStatus(@RequestParam("userId") Integer userId,@RequestParam("status") String status){
+        log.info("修改用户状态: id:{},状态:{}(0-无效 1-有效)",userId,status);
+        userService.changeUserStatus(userId,status);
+        return success();
+    }
+
+    @GetMapping("/changeUserCommentStatus")
+    @ApiOperation(value = "修改用户评论状态", httpMethod = "GET")
+    public CR changeUserCommentStatus(@RequestParam("userId") Integer userId,@RequestParam("commentStatus") String commentStatus){
+        log.info("修改用户评论状态: id:{},状态:{}(0-禁言 1-正常)",userId,commentStatus);
+        userService.changeUserCommentStatus(userId,commentStatus);
         return success();
     }
 

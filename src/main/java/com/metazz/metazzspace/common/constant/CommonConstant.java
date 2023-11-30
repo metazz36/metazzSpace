@@ -24,6 +24,7 @@ public class CommonConstant {
     public static final String USER_REGISTER_CODE = "user_register_code_"; // 注册验证码前缀
     public static final String PASSWORD_MODIFY_CODE = "password_modify_code_"; // 密码修改验证码前缀
     public static final String USER_TOKEN = "user_token_"; // Token前缀
+    public static final String USERID_TOKEN="userid_token";
 
     /**
      * 请求头Token键
