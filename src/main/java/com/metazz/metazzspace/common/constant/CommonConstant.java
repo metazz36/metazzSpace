@@ -21,7 +21,8 @@ public class CommonConstant {
     /**
      * Redis缓存前缀
      */
-    public static final String USER_CODE = "user_code_"; // 验证码前缀
+    public static final String USER_REGISTER_CODE = "user_register_code_"; // 注册验证码前缀
+    public static final String PASSWORD_MODIFY_CODE = "password_modify_code_"; // 密码修改验证码前缀
     public static final String USER_TOKEN = "user_token_"; // Token前缀
 
     /**
@@ -32,7 +33,7 @@ public class CommonConstant {
     /**
      * Redis缓存过期时间
      */
-    public static final long USER_CODE_EXPIRE = 2; // 验证码过期时间，单位分钟
+    public static final long CODE_EXPIRE = 2; // 验证码过期时间，单位分钟
     public static final long USER_TOKEN_EXPIRE = 5; // Token过期时间，单位天
 
     /**

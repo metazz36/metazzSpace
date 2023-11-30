@@ -8,7 +8,11 @@ import com.metazz.metazzspace.common.enums.CommonEnum;
 import com.metazz.metazzspace.common.enums.ExceptionEnum;
 import com.metazz.metazzspace.common.exception.BaseException;
 import com.metazz.metazzspace.common.util.MailUtil;
+import com.metazz.metazzspace.common.util.MetazzUtil;
+import com.metazz.metazzspace.common.util.UserUtil;
+import com.metazz.metazzspace.model.dto.ModifyPasswordDTO;
 import com.metazz.metazzspace.model.dto.UserLoginDTO;
+import com.metazz.metazzspace.model.dto.UserModifyDTO;
 import com.metazz.metazzspace.model.dto.UserRegisterDTO;
 import com.metazz.metazzspace.model.entity.User;
 import com.metazz.metazzspace.mapper.UserMapper;
@@ -32,16 +36,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     MailUtil mailUtil;
 
     @Override
-    public void getCode(String email) {
-        // 邮箱已被注册
-        Integer emailCount = lambdaQuery().eq(User::getEmail, email).count();
-        if(emailCount != 0){
-            throw new BaseException(ExceptionEnum.EMAIL_HAS_BEEN_REGISTERED);
-        }
+    public void getCode(String email,String purpose) {
         int i = new Random().nextInt(900000) + 100000;
         log.info(email + "的验证码为: {}",i);
         // 将验证码保存到Redis中
-        redisTemplate.opsForValue().set(CommonConstant.USER_CODE + email,String.valueOf(i),CommonConstant.USER_CODE_EXPIRE, TimeUnit.MINUTES);
+        if("0".equals(purpose)){
+            redisTemplate.opsForValue().set(CommonConstant.USER_REGISTER_CODE + email,String.valueOf(i),CommonConstant.CODE_EXPIRE, TimeUnit.MINUTES);
+        }else{
+            redisTemplate.opsForValue().set(CommonConstant.PASSWORD_MODIFY_CODE + email,String.valueOf(i),CommonConstant.CODE_EXPIRE, TimeUnit.MINUTES);
+        }
         // 通过邮件发送验证码
         List<String> to = new ArrayList<>();
         to.add(email);
@@ -55,7 +58,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             // 用户名不能包含@
             throw new BaseException(ExceptionEnum.USER_NAME_ERROR);
         }
-        String code = (String) redisTemplate.opsForValue().get(CommonConstant.USER_CODE + userRegisterDTO.getEmail());
         Integer userNameCount = lambdaQuery().eq(User::getUserName, userRegisterDTO.getUserName()).count();
         if(userNameCount != 0){
             // 用户名已被注册
@@ -66,6 +68,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             // 邮箱已被注册
             throw new BaseException(ExceptionEnum.EMAIL_HAS_BEEN_REGISTERED);
         }
+        String code = (String) redisTemplate.opsForValue().get(CommonConstant.USER_REGISTER_CODE + userRegisterDTO.getEmail());
         if(StrUtil.isBlank(code) || !userRegisterDTO.getCode().equals(code)) {
             // 验证码错误
             throw new BaseException(ExceptionEnum.CODE_ERROR);
@@ -101,6 +104,66 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         redisTemplate.opsForValue().set(CommonConstant.USER_TOKEN + uuid,user,CommonConstant.USER_TOKEN_EXPIRE,TimeUnit.DAYS);
         return CommonConstant.USER_TOKEN + uuid;
+    }
+
+    @Override
+    public void exit() {
+        // 将token从Redis移除
+        String token = MetazzUtil.getToken();
+        redisTemplate.delete(token);
+    }
+
+    @Override
+    public void modifyUser(UserModifyDTO userModifyDTO) {
+        if (userModifyDTO.getUserName().contains("@")) {
+            // 用户名不能包含@
+            throw new BaseException(ExceptionEnum.USER_NAME_ERROR);
+        }
+        Integer count = lambdaQuery().eq(User::getUserName, userModifyDTO.getUserName()).ne(User::getId, UserUtil.getUser().getId()).count();
+        if (count != 0) {
+            // 用户名已被注册
+            throw new BaseException(ExceptionEnum.USER_NAME_HAS_BEEN_REGISTERED);
+        }
+        // MySQL更新用户信息
+        User user = new User();
+        user.setId(UserUtil.getUser().getId());
+        user.setUserName(userModifyDTO.getUserName());
+        user.setNickName(userModifyDTO.getUserName());
+        user.setGender(userModifyDTO.getGender());
+        user.setAvatar(userModifyDTO.getAvatar());
+        user.setBirthday(userModifyDTO.getBirthday());
+        user.setIntroduction(userModifyDTO.getIntroduction());
+        updateById(user);
+        // Redis更新用户信息
+        User one = lambdaQuery().eq(User::getId, user.getId()).one();
+        one.setPassword(null);
+        redisTemplate.opsForValue().set(MetazzUtil.getToken(),one,CommonConstant.USER_TOKEN_EXPIRE,TimeUnit.DAYS);
+    }
+
+    @Override
+    public void modifyPassword(ModifyPasswordDTO modifyPasswordDTO) {
+        String code = (String) redisTemplate.opsForValue().get(CommonConstant.PASSWORD_MODIFY_CODE + modifyPasswordDTO.getEmail());
+        if(StrUtil.isBlank(code) || !modifyPasswordDTO.getCode().equals(code)) {
+            // 验证码错误
+            throw new BaseException(ExceptionEnum.CODE_ERROR);
+        }
+        // Redis删除该Key，确保一个验证码只能进行一次密码修改
+        redisTemplate.delete(CommonConstant.PASSWORD_MODIFY_CODE + modifyPasswordDTO.getEmail());
+        User user = lambdaQuery().eq(User::getEmail, modifyPasswordDTO.getEmail()).one();
+        if (!Optional.ofNullable(user).isPresent()) {
+            // 邮箱没有关联的账号
+            throw new BaseException(ExceptionEnum.MAIL_HAS_NO_ASSOCIATED_ACCOUNT);
+        }
+        if(CommonEnum.USER_STATUS_ENABLE.getCode().equals(user.getStatus())){
+            // 用户状态无效
+            throw new BaseException(ExceptionEnum.USER_STATUS_DISABLE);
+        }
+        // 更新密码
+        User one = new User();
+        one.setId(user.getId());
+        String password = new String(SecureUtil.aes(CommonConstant.PASSWORD_KEY.getBytes(StandardCharsets.UTF_8)).encrypt(modifyPasswordDTO.getPassword()));;
+        one.setPassword(password);
+        updateById(one);
     }
 
 }

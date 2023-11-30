@@ -48,6 +48,7 @@ public enum ExceptionEnum{
 
     PERMISSION_DENIED(CommonConstant.BUSINESS_ERROR, "权限不足"),
 
+    MAIL_HAS_NO_ASSOCIATED_ACCOUNT(CommonConstant.BUSINESS_ERROR,"邮箱没有关联的账号"),
 
     ;
 

@@ -3,10 +3,11 @@ package com.metazz.metazzspace.common.aspect;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.metazz.metazzspace.common.annotation.LoginCheck;
-import com.metazz.metazzspace.common.constant.CommonConstant;
 import com.metazz.metazzspace.common.enums.CommonEnum;
 import com.metazz.metazzspace.common.enums.ExceptionEnum;
 import com.metazz.metazzspace.common.exception.BaseException;
+import com.metazz.metazzspace.common.util.MetazzUtil;
+import com.metazz.metazzspace.common.util.UserUtil;
 import com.metazz.metazzspace.model.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -15,8 +16,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import java.util.Optional;
 
 @Aspect
@@ -29,7 +28,7 @@ public class LoginCheckAspect {
 
     @Around("@annotation(loginCheck)")
     public Object aroundLog(ProceedingJoinPoint point, LoginCheck loginCheck) throws Throwable {
-        String token = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader(CommonConstant.TOKEN_HEADER);
+        String token = MetazzUtil.getToken();
         if(StrUtil.isBlank(token)){
             // 未登陆
             throw new BaseException(ExceptionEnum.NOT_LOGIN);
@@ -44,6 +43,12 @@ public class LoginCheckAspect {
             // 权限不足
             throw new BaseException(ExceptionEnum.PERMISSION_DENIED);
         }
-        return point.proceed();
+        // 用户信息保存到ThreadLocal中
+        UserUtil.setUser(user);
+        // 执行目标方法
+        Object proceed = point.proceed();
+        // 从ThreadLocal移除用户信息
+        UserUtil.removeUser();
+        return proceed;
     }
 }
