@@ -8,16 +8,29 @@ import lombok.Getter;
 public enum CommonEnum {
 
     /**
-     * 用户状态
+     * 状态
      */
-    USER_STATUS_ENABLE("0","无效"),
-    USER_STATUS_DISABLE("1","有效"),
+    DISABLE("0","无效"),
+    ENABLE("1","有效"),
+
+    /**
+     * 是否
+     */
+    NO("0","否"),
+    YES("1","是"),
 
     /**
      * 用户类型
      */
     USER_TYPE_USER("0", "用户"),
     USER_TYPE_ADMIN("1", "管理员"),
+
+    /**
+     * 评论类型
+     */
+    COMMENT_TYPE_BLOG("0","博客"),
+    COMMENT_TYPE_CHAT("1","说说"),
+    COMMENT_TYPE_MESSAGE("2","全站留言"),
 
     ;
 

@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -112,7 +111,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             // 账号或密码错误
             throw new BaseException(ExceptionEnum.ACCOUNT_OR_PASSWORD_ERROR);
         }
-        if(CommonEnum.USER_STATUS_ENABLE.getCode().equals(user.getStatus())){
+        if(CommonEnum.DISABLE.getCode().equals(user.getStatus())){
             // 用户状态无效
             throw new BaseException(ExceptionEnum.USER_STATUS_DISABLE);
         }
@@ -177,7 +176,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             // 邮箱没有关联的账号
             throw new BaseException(ExceptionEnum.MAIL_HAS_NO_ASSOCIATED_ACCOUNT);
         }
-        if(CommonEnum.USER_STATUS_ENABLE.getCode().equals(user.getStatus())){
+        if(CommonEnum.DISABLE.getCode().equals(user.getStatus())){
             // 用户状态无效
             throw new BaseException(ExceptionEnum.USER_STATUS_DISABLE);
         }

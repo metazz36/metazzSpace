@@ -16,6 +16,8 @@ public enum ExceptionEnum{
 
     BLOG_NOT_EXISTS(CommonConstant.BUSINESS_ERROR,"博客不存在"),
 
+    BLOG_STATUS_DISABLE(CommonConstant.BUSINESS_ERROR,"博客状态无效"),
+
     BLOG_TITLE_EXISTS(CommonConstant.BUSINESS_ERROR,"博客标题存在"),
 
     CATEGORY_NAME_EXISTS(CommonConstant.BUSINESS_ERROR,"分类名字已存在"),
@@ -50,6 +52,11 @@ public enum ExceptionEnum{
 
     MAIL_HAS_NO_ASSOCIATED_ACCOUNT(CommonConstant.BUSINESS_ERROR,"邮箱没有关联的账号"),
 
+    COMMENT_IS_CLOSED(CommonConstant.BUSINESS_ERROR,"评论已关闭"),
+
+    CHAT_NOT_EXISTS(CommonConstant.BUSINESS_ERROR,"说说不存在"),
+
+    CHAT_STATUS_DISABLE(CommonConstant.BUSINESS_ERROR,"说说状态无效"),
     ;
 
     private String code;
