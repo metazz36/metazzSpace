@@ -12,4 +12,6 @@ public interface ICommentService extends IService<Comment> {
 
     CommentQueryVO queryComment(CommentQueryDTO commentQueryDTO);
 
+    Integer queryCount(CommentQueryDTO commentQueryDTO);
+
 }

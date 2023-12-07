@@ -39,4 +39,10 @@ public class CommentController implements BaseController{
         return success(commentService.queryComment(commentQueryDTO));
     }
 
+    @PostMapping("/queryCount")
+    @ApiOperation(value = "查询评论数量", httpMethod = "POST")
+    public CR queryCount(@RequestBody @Valid CommentQueryDTO commentQueryDTO){
+        return success(commentService.queryCount(commentQueryDTO));
+    }
+
 }
