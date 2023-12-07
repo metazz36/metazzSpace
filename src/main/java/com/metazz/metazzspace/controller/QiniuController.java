@@ -1,5 +1,6 @@
 package com.metazz.metazzspace.controller;
 
+import com.metazz.metazzspace.common.response.BaseController;
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.common.util.QiniuUtil;
 import io.swagger.annotations.Api;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Api(value = "七牛云")
 @SuppressWarnings("all")
-public class QiniuController implements BaseController{
+public class QiniuController implements BaseController {
 
     @GetMapping("/getUpToken")
     @ApiOperation(value = "获取覆盖上传凭证", httpMethod = "GET")

@@ -1,6 +1,7 @@
 package com.metazz.metazzspace.controller;
 
 import com.metazz.metazzspace.common.annotation.LoginCheck;
+import com.metazz.metazzspace.common.response.BaseController;
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.model.dto.*;
 import com.metazz.metazzspace.service.IUserService;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Api(value = "用户")
 @SuppressWarnings("all")
-public class UserController implements BaseController{
+public class UserController implements BaseController {
 
     @Autowired
     IUserService userService;

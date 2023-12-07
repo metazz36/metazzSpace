@@ -1,5 +1,6 @@
 package com.metazz.metazzspace.controller;
 
+import com.metazz.metazzspace.common.response.BaseController;
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.model.dto.CategoryAddDTO;
 import com.metazz.metazzspace.model.dto.CategoryModifyDTO;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Api(value = "分类")
 @SuppressWarnings("all")
-public class CategoryController implements BaseController{
+public class CategoryController implements BaseController {
 
     @Autowired
     ICategoryService categoryService;

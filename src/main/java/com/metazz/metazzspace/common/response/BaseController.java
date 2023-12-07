@@ -1,4 +1,4 @@
-package com.metazz.metazzspace.controller;
+package com.metazz.metazzspace.common.response;
 
 import com.metazz.metazzspace.common.response.CR;
 

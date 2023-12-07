@@ -1,6 +1,7 @@
 package com.metazz.metazzspace.controller;
 
 import com.metazz.metazzspace.common.annotation.LoginCheck;
+import com.metazz.metazzspace.common.response.BaseController;
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.model.dto.CommentAddDTO;
 import com.metazz.metazzspace.model.dto.CommentQueryDTO;
@@ -17,7 +18,7 @@ import javax.validation.Valid;
 @Slf4j
 @Api(value = "评论")
 @SuppressWarnings("all")
-public class CommentController implements BaseController{
+public class CommentController implements BaseController {
 
     @Autowired
     ICommentService commentService;

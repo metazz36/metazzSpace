@@ -1,5 +1,6 @@
 package com.metazz.metazzspace.controller;
 
+import com.metazz.metazzspace.common.response.BaseController;
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.model.dto.BlogAddDTO;
 import com.metazz.metazzspace.model.dto.BlogModifyDTO;
@@ -18,7 +19,7 @@ import javax.validation.Valid;
 @Slf4j
 @Api(value = "博客")
 @SuppressWarnings("all")
-public class BlogController implements BaseController{
+public class BlogController implements BaseController {
 
     @Autowired
     IBlogService blogService;

@@ -1,5 +1,6 @@
 package com.metazz.metazzspace.controller;
 
+import com.metazz.metazzspace.common.response.BaseController;
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.model.dto.LabelAddDTO;
 import com.metazz.metazzspace.model.dto.LabelModifyDTO;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Api(value = "标签")
 @SuppressWarnings("all")
-public class LabelController implements BaseController{
+public class LabelController implements BaseController {
 
     @Autowired
     ILabelService labelService;
