@@ -9,10 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
@@ -29,6 +26,7 @@ public class CommentController implements BaseController{
     @ApiOperation(value = "发表评论", httpMethod = "POST")
     @LoginCheck
     public CR addComment(@RequestBody @Valid CommentAddDTO commentAddDTO){
+        log.info("发表评论:{}",commentAddDTO);
         commentService.addComment(commentAddDTO);
         return success();
     }
@@ -43,6 +41,14 @@ public class CommentController implements BaseController{
     @ApiOperation(value = "查询评论数量", httpMethod = "POST")
     public CR queryCount(@RequestBody @Valid CommentQueryDTO commentQueryDTO){
         return success(commentService.queryCount(commentQueryDTO));
+    }
+
+    @DeleteMapping("/delete")
+    @ApiOperation(value = "根据id删除评论", httpMethod = "DELETE")
+    public CR deleteComment(@RequestParam("id") String id){
+        log.info("根据id删除评论:{}",id);
+        commentService.deleteComment(id);
+        return success();
     }
 
 }

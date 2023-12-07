@@ -14,4 +14,6 @@ public interface ICommentService extends IService<Comment> {
 
     Integer queryCount(CommentQueryDTO commentQueryDTO);
 
+    void deleteComment(String id);
+
 }

@@ -4,21 +4,24 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.metazz.metazzspace.common.enums.CommonEnum;
 import com.metazz.metazzspace.common.enums.ExceptionEnum;
 import com.metazz.metazzspace.common.exception.BaseException;
+import com.metazz.metazzspace.mapper.CommentMapper;
 import com.metazz.metazzspace.model.dto.BlogAddDTO;
 import com.metazz.metazzspace.model.dto.BlogModifyDTO;
 import com.metazz.metazzspace.model.dto.BlogQueryDTO;
 import com.metazz.metazzspace.model.entity.Blog;
 import com.metazz.metazzspace.mapper.BlogMapper;
+import com.metazz.metazzspace.model.entity.Comment;
 import com.metazz.metazzspace.service.IBlogService;
 import com.metazz.metazzspace.service.IBlogUserApplaudService;
 import com.metazz.metazzspace.service.IBlogUserCollectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +37,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
 
     @Autowired
     IBlogUserApplaudService blogUserApplaudService;
+
+    @Autowired
+    CommentMapper commentMapper;
 
     @Override
     public void addBlog(BlogAddDTO blogAddDTO) {
@@ -67,7 +73,14 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         blogUserCollectService.deleteByBlogId(Integer.valueOf(id));
         // 3、删除关联数据 —— 用户点赞博客
         blogUserApplaudService.deleteByBlogId(Integer.valueOf(id));
-        // TODO 4、删除关联数据 —— 博客评论
+        // 4、删除关联数据 —— 博客评论(采用伪删除)
+        LambdaUpdateChainWrapper<Comment> commentUpdateWrapper = new LambdaUpdateChainWrapper<>(commentMapper);
+        commentUpdateWrapper.
+                eq(Comment::getType, CommonEnum.COMMENT_TYPE_BLOG.getCode()).
+                eq(Comment::getObjectId,id).
+                set(Comment::getStatus,CommonEnum.DISABLE.getCode()).
+                set(Comment::getDeleteTime,new Date()).
+                update();
     }
 
     @Override

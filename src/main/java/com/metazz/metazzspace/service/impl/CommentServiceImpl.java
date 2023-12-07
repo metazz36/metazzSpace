@@ -23,10 +23,8 @@ import com.metazz.metazzspace.model.vo.CommentVO;
 import com.metazz.metazzspace.service.ICommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -201,6 +199,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                 orderByAsc(Comment::getCreatedTime).
                 list();
         return comments.size();
+    }
+
+    @Override
+    public void deleteComment(String id) {
+        lambdaUpdate().
+                eq(Comment::getId,id).
+                set(Comment::getStatus,CommonEnum.DISABLE.getCode()).
+                set(Comment::getDeleteTime,new Date()).
+                update();
     }
 
     public CommentVO buildCommentVO(Comment comment){
