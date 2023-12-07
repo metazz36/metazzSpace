@@ -25,4 +25,10 @@ public interface IUserService extends IService<User> {
 
     Page<User> getUserByPage(UserQueryDTO userQueryDTO);
 
+    void applaudBlog(Integer blogId);
+
+    void collectBlog(Integer blogId);
+
+    void applaudChat(Integer chatId);
+
 }

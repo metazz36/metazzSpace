@@ -84,10 +84,34 @@ public class UserController implements BaseController{
         return success();
     }
 
-    @PostMapping("getByPage")
+    @PostMapping("/getByPage")
     @ApiOperation(value = "分页查询用户信息", httpMethod = "POST")
     public CR getUserByPage(@RequestBody UserQueryDTO userQueryDTO){
         return success(userService.getUserByPage(userQueryDTO));
+    }
+
+    @LoginCheck
+    @GetMapping("/applaudBlog")
+    @ApiOperation(value = "用户点赞博客", httpMethod = "GET")
+    public CR applaudBlog(@RequestParam("blogId") Integer blogId){
+        userService.applaudBlog(blogId);
+        return success();
+    }
+
+    @LoginCheck
+    @GetMapping("/collectBlog")
+    @ApiOperation(value = "用户收藏博客", httpMethod = "GET")
+    public CR collectBlog(@RequestParam("blogId") Integer blogId){
+        userService.collectBlog(blogId);
+        return success();
+    }
+
+    @LoginCheck
+    @GetMapping("/applaudChat")
+    @ApiOperation(value = "用户点赞说说", httpMethod = "GET")
+    public CR applaudChat(@RequestParam("chatId") Integer chatId){
+        userService.applaudChat(chatId);
+        return success();
     }
 
 }

@@ -26,7 +26,7 @@ public class ChatUserApplaud implements Serializable {
     /**
      * 说说ID
      */
-    private Integer blogId;
+    private Integer chatId;
 
     /**
      * 创建时间

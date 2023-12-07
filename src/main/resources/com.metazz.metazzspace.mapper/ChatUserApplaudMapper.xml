@@ -4,10 +4,10 @@
   <resultMap id="BaseResultMap" type="com.metazz.metazzspace.model.entity.ChatUserApplaud">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="blog_id" jdbcType="INTEGER" property="blogId" />
+    <result column="chat_id" jdbcType="INTEGER" property="chatId" />
     <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, blog_id, created_time
+    id, user_id, chat_id, created_time
   </sql>
 </mapper>

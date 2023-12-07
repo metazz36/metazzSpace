@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.metazz.metazzspace.common.constant.CommonConstant;
@@ -13,7 +14,13 @@ import com.metazz.metazzspace.common.exception.BaseException;
 import com.metazz.metazzspace.common.util.MailUtil;
 import com.metazz.metazzspace.common.util.MetazzUtil;
 import com.metazz.metazzspace.common.util.UserUtil;
+import com.metazz.metazzspace.mapper.BlogUserApplaudMapper;
+import com.metazz.metazzspace.mapper.BlogUserCollectMapper;
+import com.metazz.metazzspace.mapper.ChatUserApplaudMapper;
 import com.metazz.metazzspace.model.dto.*;
+import com.metazz.metazzspace.model.entity.BlogUserApplaud;
+import com.metazz.metazzspace.model.entity.BlogUserCollect;
+import com.metazz.metazzspace.model.entity.ChatUserApplaud;
 import com.metazz.metazzspace.model.entity.User;
 import com.metazz.metazzspace.mapper.UserMapper;
 import com.metazz.metazzspace.service.IUserService;
@@ -37,6 +44,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    BlogUserCollectMapper blogUserCollectMapper;
+
+    @Autowired
+    BlogUserApplaudMapper blogUserApplaudMapper;
+
+    @Autowired
+    ChatUserApplaudMapper chatUserApplaudMapper;
 
     @Override
     public void getCode(String email,String purpose) {
@@ -222,6 +238,51 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             userPage.getRecords().stream().forEach(user -> user.setPassword(null));
         }
         return userPage;
+    }
+
+    @Override
+    public void applaudBlog(Integer blogId) {
+        Integer userId = UserUtil.getUser().getId();
+        BlogUserApplaud one = new LambdaQueryChainWrapper<>(blogUserApplaudMapper).
+                eq(BlogUserApplaud::getUserId, userId).
+                eq(BlogUserApplaud::getBlogId, blogId).
+                one();
+        if(!Optional.ofNullable(one).isPresent()){
+            BlogUserApplaud blogUserApplaud = new BlogUserApplaud();
+            blogUserApplaud.setUserId(userId);
+            blogUserApplaud.setBlogId(blogId);
+            blogUserApplaudMapper.insert(blogUserApplaud);
+        }
+    }
+
+    @Override
+    public void collectBlog(Integer blogId) {
+        Integer userId = UserUtil.getUser().getId();
+        BlogUserCollect one = new LambdaQueryChainWrapper<>(blogUserCollectMapper).
+                eq(BlogUserCollect::getUserId, userId).
+                eq(BlogUserCollect::getBlogId, blogId).
+                one();
+        if(!Optional.ofNullable(one).isPresent()){
+            BlogUserCollect blogUserCollect = new BlogUserCollect();
+            blogUserCollect.setUserId(userId);
+            blogUserCollect.setBlogId(blogId);
+            blogUserCollectMapper.insert(blogUserCollect);
+        }
+    }
+
+    @Override
+    public void applaudChat(Integer chatId) {
+        Integer userId = UserUtil.getUser().getId();
+        ChatUserApplaud one = new LambdaQueryChainWrapper<>(chatUserApplaudMapper).
+                eq(ChatUserApplaud::getUserId, userId).
+                eq(ChatUserApplaud::getChatId, chatId).
+                one();
+        if(!Optional.ofNullable(one).isPresent()){
+            ChatUserApplaud chatUserApplaud = new ChatUserApplaud();
+            chatUserApplaud.setUserId(userId);
+            chatUserApplaud.setChatId(chatId);
+            chatUserApplaudMapper.insert(chatUserApplaud);
+        }
     }
 
 }
