@@ -1,9 +1,9 @@
 package com.metazz.metazzspace.common.util;
 
 import com.google.gson.Gson;
-import com.metazz.metazzspace.common.constant.CommonConstant;
 import com.metazz.metazzspace.common.enums.ExceptionEnum;
 import com.metazz.metazzspace.common.exception.BaseException;
+import com.metazz.metazzspace.common.properties.QiNiuProperties;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
 import com.qiniu.storage.Configuration;
@@ -11,29 +11,35 @@ import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class QiniuUtil {
+
+    @Autowired
+    QiNiuProperties qiNiuProperties;
 
     /**
      * 获取覆盖上传凭证
      */
-    public static String getToken(String key){
-        Auth auth = Auth.create(CommonConstant.ACCESS_KEY, CommonConstant.SECRET_KEY);
-        return auth.uploadToken(CommonConstant.BUCKET, key);
+    public String getToken(String key){
+        Auth auth = Auth.create(qiNiuProperties.getAccess_key(), qiNiuProperties.getSecret_key());
+        return auth.uploadToken(qiNiuProperties.getBucket(), key);
     }
 
     /**
      * 服务器直传
      */
-    public static String serverUpload(String fileName){
+    public String serverUpload(String fileName){
         // 1、构造一个带指定 Region 对象的配置类
         Configuration cfg = new Configuration(Region.region2());
         cfg.resumableUploadAPIVersion = Configuration.ResumableUploadAPIVersion.V2;// 指定分片上传版本
         UploadManager uploadManager = new UploadManager(cfg);
         // 2、生成上传凭证，然后准备上传
-        String accessKey = CommonConstant.ACCESS_KEY;
-        String secretKey = CommonConstant.SECRET_KEY;
-        String bucket = CommonConstant.BUCKET;
+        String accessKey = qiNiuProperties.getAccess_key();
+        String secretKey = qiNiuProperties.getSecret_key();
+        String bucket = qiNiuProperties.getBucket();
         String key = fileName; //默认不指定key的情况下，以文件内容的hash值作为文件名
         Auth auth = Auth.create(accessKey, secretKey);
         String upToken = auth.uploadToken(bucket);
@@ -56,7 +62,7 @@ public class QiniuUtil {
             }
             throw new BaseException(ExceptionEnum.SERVER_ERROR);
         }
-        return CommonConstant.DOWNLOAD_URL + fileName;
+        return qiNiuProperties.getDownload_url() + fileName;
     }
 
 }
