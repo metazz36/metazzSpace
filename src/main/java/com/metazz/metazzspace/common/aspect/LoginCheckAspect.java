@@ -14,6 +14,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import java.util.Optional;
@@ -21,6 +22,7 @@ import java.util.Optional;
 @Aspect
 @Component
 @Slf4j
+@Order(0)
 public class LoginCheckAspect {
 
     @Autowired

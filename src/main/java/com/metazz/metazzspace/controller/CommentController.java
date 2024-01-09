@@ -1,6 +1,7 @@
 package com.metazz.metazzspace.controller;
 
 import com.metazz.metazzspace.common.annotation.LoginCheck;
+import com.metazz.metazzspace.common.annotation.SysLog;
 import com.metazz.metazzspace.common.response.BaseController;
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.model.dto.CommentAddDTO;
@@ -24,6 +25,7 @@ public class CommentController implements BaseController {
     ICommentService commentService;
 
     @PostMapping("/add")
+    @SysLog(operateName = "发表评论")
     @ApiOperation(value = "发表评论", httpMethod = "POST")
     @LoginCheck
     public CR addComment(@RequestBody @Valid CommentAddDTO commentAddDTO){
@@ -33,18 +35,21 @@ public class CommentController implements BaseController {
     }
 
     @PostMapping("/query")
+    @SysLog(operateName = "查询评论")
     @ApiOperation(value = "查询评论", httpMethod = "POST")
     public CR queryComment(@RequestBody @Valid CommentQueryDTO commentQueryDTO){
         return success(commentService.queryComment(commentQueryDTO));
     }
 
     @PostMapping("/queryCount")
+    @SysLog(operateName = "查询评论数量")
     @ApiOperation(value = "查询评论数量", httpMethod = "POST")
     public CR queryCount(@RequestBody @Valid CommentQueryDTO commentQueryDTO){
         return success(commentService.queryCount(commentQueryDTO));
     }
 
     @DeleteMapping("/delete")
+    @SysLog(operateName = "根据id删除评论")
     @ApiOperation(value = "根据id删除评论", httpMethod = "DELETE")
     public CR deleteComment(@RequestParam("id") String id){
         log.info("根据id删除评论:{}",id);

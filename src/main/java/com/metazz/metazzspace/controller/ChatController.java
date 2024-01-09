@@ -1,5 +1,6 @@
 package com.metazz.metazzspace.controller;
 
+import com.metazz.metazzspace.common.annotation.SysLog;
 import com.metazz.metazzspace.common.response.BaseController;
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.model.dto.ChatAddDTO;
@@ -23,6 +24,7 @@ public class ChatController implements BaseController {
     IChatService chatService;
 
     @PostMapping("/add")
+    @SysLog(operateName = "新增说说")
     @ApiOperation(value = "新增说说", httpMethod = "POST")
     public CR addChat(@RequestBody ChatAddDTO chatAddDTO){
         log.info("新增说说：{}", chatAddDTO);
@@ -31,6 +33,7 @@ public class ChatController implements BaseController {
     }
 
     @PutMapping("/modify")
+    @SysLog(operateName = "修改说说")
     @ApiOperation(value = "修改说说", httpMethod = "PUT")
     public CR modifyChat(@RequestBody ChatModifyDTO chatModifyDTO){
         log.info("修改说说：{}", chatModifyDTO);
@@ -39,6 +42,7 @@ public class ChatController implements BaseController {
     }
 
     @DeleteMapping("/delete")
+    @SysLog(operateName = "删除说说")
     @ApiOperation(value = "删除说说", httpMethod = "DELETE")
     public CR deleteChat(@RequestParam("id") String id){
         log.info("删除说说：{}",id);
@@ -47,6 +51,7 @@ public class ChatController implements BaseController {
     }
 
     @PostMapping("/getByPage")
+    @SysLog(operateName = "分页查询说说信息")
     @ApiOperation(value = "分页查询说说信息", httpMethod = "POST")
     public CR getChatByPage(@RequestBody ChatQueryDTO chatQueryDTO){
         log.info("分页查询说说信息：{}",chatQueryDTO);
@@ -54,6 +59,7 @@ public class ChatController implements BaseController {
     }
 
     @GetMapping("/get")
+    @SysLog(operateName = "根据id查询说说")
     @ApiOperation(value = "根据id查询说说", httpMethod = "GET")
     public CR getChatById(@RequestParam("id") String id){
         log.info("根据id查询说说：{}",id);

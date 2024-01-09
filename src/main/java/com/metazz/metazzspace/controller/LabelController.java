@@ -1,5 +1,6 @@
 package com.metazz.metazzspace.controller;
 
+import com.metazz.metazzspace.common.annotation.SysLog;
 import com.metazz.metazzspace.common.response.BaseController;
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.model.dto.LabelAddDTO;
@@ -23,6 +24,7 @@ public class LabelController implements BaseController {
     ILabelService labelService;
 
     @PostMapping("/add")
+    @SysLog(operateName = "新增标签")
     @ApiOperation(value = "新增标签", httpMethod = "POST")
     public CR addLabel(@RequestBody LabelAddDTO labelAddDTO){
         log.info("新增标签：{}", labelAddDTO);
@@ -31,6 +33,7 @@ public class LabelController implements BaseController {
     }
 
     @DeleteMapping("/delete")
+    @SysLog(operateName = "根据id删除标签")
     @ApiOperation(value = "根据id删除标签", httpMethod = "DELETE")
     public CR deleteLabelById(@RequestParam("id") String id){
         labelService.deleteLabelById(id);
@@ -38,6 +41,7 @@ public class LabelController implements BaseController {
     }
 
     @PutMapping("/modify")
+    @SysLog(operateName = "修改标签")
     @ApiOperation(value = "修改标签", httpMethod = "PUT")
     public CR modifyLabel(@RequestBody LabelModifyDTO labelModifyDTO){
         labelService.modifyLabel(labelModifyDTO);
@@ -45,12 +49,14 @@ public class LabelController implements BaseController {
     }
 
     @PostMapping("/getAll")
+    @SysLog(operateName = "查询所有标签")
     @ApiOperation(value = "查询所有标签", httpMethod = "POST")
     public CR getAllLabel(@RequestBody PageQueryDTO pageQueryDTO){
         return success(labelService.getAllLabel(pageQueryDTO));
     }
 
     @GetMapping("/get")
+    @SysLog(operateName = "根据id查询标签")
     @ApiOperation(value = "根据id查询标签", httpMethod = "GET")
     public CR getLabelById(@RequestParam("id") String id){
         return success(labelService.getLabelById(id));

@@ -1,5 +1,6 @@
 package com.metazz.metazzspace.controller;
 
+import com.metazz.metazzspace.common.annotation.SysLog;
 import com.metazz.metazzspace.common.response.BaseController;
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.model.dto.CategoryAddDTO;
@@ -23,6 +24,7 @@ public class CategoryController implements BaseController {
     ICategoryService categoryService;
 
     @PostMapping("/add")
+    @SysLog(operateName = "新增分类")
     @ApiOperation(value = "新增分类", httpMethod = "POST")
     public CR addCategory(@RequestBody CategoryAddDTO categoryAddDTO){
         log.info("新增分类：{}", categoryAddDTO);
@@ -31,6 +33,7 @@ public class CategoryController implements BaseController {
     }
 
     @DeleteMapping("/delete")
+    @SysLog(operateName = "根据id删除分类")
     @ApiOperation(value = "根据id删除分类", httpMethod = "DELETE")
     public CR deleteCategoryById(@RequestParam("id") String id){
         log.info("根据id删除分类：{}",id);
@@ -39,6 +42,7 @@ public class CategoryController implements BaseController {
     }
 
     @PutMapping("/modify")
+    @SysLog(operateName = "修改分类")
     @ApiOperation(value = "修改分类", httpMethod = "PUT")
     public CR modifyCategory(@RequestBody CategoryModifyDTO categoryModifyDTO){
         log.info("修改分类：{}", categoryModifyDTO);
@@ -47,12 +51,14 @@ public class CategoryController implements BaseController {
     }
 
     @PostMapping("/getAll")
+    @SysLog(operateName = "查询所有分类")
     @ApiOperation(value = "查询所有分类", httpMethod = "POST")
     public CR getAllCategory(@RequestBody PageQueryDTO pageQueryDTO){
         return success(categoryService.getAllCategory(pageQueryDTO));
     }
 
     @GetMapping("/get")
+    @SysLog(operateName = "根据id查询分类")
     @ApiOperation(value = "根据id查询分类", httpMethod = "GET")
     public CR getCategoryById(@RequestParam("id") String id){
         return success(categoryService.getCategoryById(id));

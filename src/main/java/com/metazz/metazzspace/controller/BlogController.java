@@ -1,5 +1,6 @@
 package com.metazz.metazzspace.controller;
 
+import com.metazz.metazzspace.common.annotation.SysLog;
 import com.metazz.metazzspace.common.response.BaseController;
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.model.dto.BlogAddDTO;
@@ -25,6 +26,7 @@ public class BlogController implements BaseController {
     IBlogService blogService;
 
     @PostMapping("/add")
+    @SysLog(operateName = "新增博客")
     @ApiOperation(value = "新增博客", httpMethod = "POST")
     public CR addBlog(@RequestBody @Valid BlogAddDTO blogAddDTO){
         log.info("新增博客：{}", blogAddDTO);
@@ -33,6 +35,7 @@ public class BlogController implements BaseController {
     }
 
     @DeleteMapping("/delete")
+    @SysLog(operateName = "删除博客")
     @ApiOperation(value = "删除博客", httpMethod = "DELETE")
     public CR deleteBlog(@RequestParam("id") String id){
         log.info("删除博客：{}",id);
@@ -41,6 +44,7 @@ public class BlogController implements BaseController {
     }
 
     @PutMapping("/modify")
+    @SysLog(operateName = "修改博客")
     @ApiOperation(value = "修改博客", httpMethod = "PUT")
     public CR modifyBlog(@RequestBody @Valid BlogModifyDTO blogModifyDTO){
         log.info("修改博客：{}", blogModifyDTO);
@@ -49,12 +53,14 @@ public class BlogController implements BaseController {
     }
 
     @PostMapping("/getByPage")
+    @SysLog(operateName = "分页查询博客信息")
     @ApiOperation(value = "分页查询博客信息", httpMethod = "POST")
     public CR getBlogByPage(@RequestBody BlogQueryDTO blogQueryDTO){
         return success(blogService.getBlogByPage(blogQueryDTO));
     }
 
     @GetMapping("/get")
+    @SysLog(operateName = "根据id查询博客")
     @ApiOperation(value = "根据id查询博客", httpMethod = "GET")
     public CR getBlogById(@RequestParam("id") String id){
         Blog blog = blogService.getBlogById(id);

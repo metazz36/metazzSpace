@@ -1,6 +1,7 @@
 package com.metazz.metazzspace.controller;
 
 import com.metazz.metazzspace.common.annotation.LoginCheck;
+import com.metazz.metazzspace.common.annotation.SysLog;
 import com.metazz.metazzspace.common.response.BaseController;
 import com.metazz.metazzspace.common.response.CR;
 import com.metazz.metazzspace.model.dto.*;
@@ -22,6 +23,7 @@ public class UserController implements BaseController {
     IUserService userService;
 
     @GetMapping("/getCode")
+    @SysLog(operateName = "获取验证码")
     @ApiOperation(value = "获取验证码", httpMethod = "GET")
     public CR getCode(@RequestParam("email") String email,@RequestParam("purpose") String purpose){
         log.info("获取验证码: 邮箱:{},用途:{}(0-用户注册，1-密码修改)",email,purpose);
@@ -30,6 +32,7 @@ public class UserController implements BaseController {
     }
 
     @PostMapping("/register")
+    @SysLog(operateName = "用户注册")
     @ApiOperation(value = "用户注册", httpMethod = "POST")
     public CR registerUser(@RequestBody UserRegisterDTO userRegisterDTO) {
         log.info("用户注册: {}",userRegisterDTO);
@@ -38,6 +41,7 @@ public class UserController implements BaseController {
     }
 
     @PostMapping("/login")
+    @SysLog(operateName = "用户登录")
     @ApiOperation(value = "用户登录", httpMethod = "POST")
     public CR loginUser(@RequestBody UserLoginDTO userLoginDTO) {
         log.info("用户登录: {}",userLoginDTO);
@@ -45,6 +49,7 @@ public class UserController implements BaseController {
     }
 
     @PostMapping("/modifyPassword")
+    @SysLog(operateName = "密码修改")
     @ApiOperation(value = "密码修改", httpMethod = "POST")
     public CR modifyPassword(@RequestBody ModifyPasswordDTO modifyPasswordDTO) {
         log.info("密码修改: {}", modifyPasswordDTO);
@@ -54,6 +59,7 @@ public class UserController implements BaseController {
 
     @LoginCheck
     @PostMapping("/modifyUser")
+    @SysLog(operateName = "用户信息修改")
     @ApiOperation(value = "用户信息修改", httpMethod = "POST")
     public CR modifyUser(@RequestBody UserModifyDTO userModifyDTO) {
         log.info("用户信息修改: {}",userModifyDTO);
@@ -63,6 +69,7 @@ public class UserController implements BaseController {
 
     @LoginCheck
     @GetMapping("/logout")
+    @SysLog(operateName = "用户退出")
     @ApiOperation(value = "用户退出", httpMethod = "GET")
     public CR exit() {
         userService.exit();
@@ -70,6 +77,7 @@ public class UserController implements BaseController {
     }
 
     @GetMapping("/changeUserStatus")
+    @SysLog(operateName = "修改用户状态")
     @ApiOperation(value = "修改用户状态", httpMethod = "GET")
     public CR changeUserStatus(@RequestParam("userId") Integer userId,@RequestParam("status") String status){
         log.info("修改用户状态: id:{},状态:{}(0-无效 1-有效)",userId,status);
@@ -78,6 +86,7 @@ public class UserController implements BaseController {
     }
 
     @GetMapping("/changeUserCommentStatus")
+    @SysLog(operateName = "修改用户评论状态")
     @ApiOperation(value = "修改用户评论状态", httpMethod = "GET")
     public CR changeUserCommentStatus(@RequestParam("userId") Integer userId,@RequestParam("commentStatus") String commentStatus){
         log.info("修改用户评论状态: id:{},状态:{}(0-禁言 1-正常)",userId,commentStatus);
@@ -86,6 +95,7 @@ public class UserController implements BaseController {
     }
 
     @PostMapping("/getByPage")
+    @SysLog(operateName = "分页查询用户信息")
     @ApiOperation(value = "分页查询用户信息", httpMethod = "POST")
     public CR getUserByPage(@RequestBody UserQueryDTO userQueryDTO){
         return success(userService.getUserByPage(userQueryDTO));
@@ -93,6 +103,7 @@ public class UserController implements BaseController {
 
     @LoginCheck
     @GetMapping("/applaudBlog")
+    @SysLog(operateName = "用户点赞博客")
     @ApiOperation(value = "用户点赞博客", httpMethod = "GET")
     public CR applaudBlog(@RequestParam("blogId") Integer blogId){
         userService.applaudBlog(blogId);
@@ -101,6 +112,7 @@ public class UserController implements BaseController {
 
     @LoginCheck
     @GetMapping("/collectBlog")
+    @SysLog(operateName = "用户收藏博客")
     @ApiOperation(value = "用户收藏博客", httpMethod = "GET")
     public CR collectBlog(@RequestParam("blogId") Integer blogId){
         userService.collectBlog(blogId);
@@ -109,6 +121,7 @@ public class UserController implements BaseController {
 
     @LoginCheck
     @GetMapping("/applaudChat")
+    @SysLog(operateName = "用户点赞说说")
     @ApiOperation(value = "用户点赞说说", httpMethod = "GET")
     public CR applaudChat(@RequestParam("chatId") Integer chatId){
         userService.applaudChat(chatId);
