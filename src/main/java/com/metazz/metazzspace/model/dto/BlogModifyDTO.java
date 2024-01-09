@@ -14,6 +14,8 @@ public class BlogModifyDTO {
     /**
      * 主键ID
      */
+    @ApiModelProperty(value = "主键ID")
+    @NotNull(message = "主键ID不能为空")
     private Integer id;
 
     /**
