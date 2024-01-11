@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.metazz.metazzspace.common.enums.CommonEnum;
 import com.metazz.metazzspace.common.exception.BaseException;
 import com.metazz.metazzspace.model.dto.BlogQueryDTO;
 import com.metazz.metazzspace.model.dto.CategoryAddDTO;
@@ -54,7 +55,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
             throw new BaseException(ExceptionEnum.CATEGORY_NOT_EXISTS);
         }
         // 该分类关联了博客，不允许删除
-        Page<Blog> blogByPage = blogService.getBlogByPage(BlogQueryDTO.builder().current(1).size(5).categoryId(Integer.valueOf(id)).labelId(0).build());
+        Page<Blog> blogByPage = blogService.getBlogByPage(BlogQueryDTO.builder().current(1).size(5).categoryId(Integer.valueOf(id)).labelId(0).status(CommonEnum.ENABLE.getCode()).build());
         if(CollectionUtil.isNotEmpty(blogByPage.getRecords())){
             throw new BaseException(ExceptionEnum.CATEGORY_LINKED_BLOG);
         }

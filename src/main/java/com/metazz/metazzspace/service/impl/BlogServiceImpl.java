@@ -101,6 +101,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         if(StrUtil.isNotBlank(blogQueryDTO.getTitle())){
             wrapper.like(Blog::getTitle,blogQueryDTO.getTitle());
         }
+        if(StrUtil.isNotBlank(blogQueryDTO.getStatus())){
+            wrapper.eq(Blog::getStatus,blogQueryDTO.getStatus());
+        }
         return blogMapper.selectPage(page, wrapper);
     }
 

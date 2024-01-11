@@ -74,6 +74,13 @@ public class BlogModifyDTO {
     private Integer sort;
 
     /**
+     * 状态(0-无效 1-有效)
+     */
+    @ApiModelProperty(value = "状态(0-无效 1-有效)")
+    @NotBlank(message = "状态不能为空")
+    private String status;
+
+    /**
      * 是否发布(0-否 1-是)
      */
     @ApiModelProperty(value = "博客是否发布(0-否 1-是)")

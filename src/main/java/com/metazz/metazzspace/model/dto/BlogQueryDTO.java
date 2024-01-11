@@ -25,4 +25,7 @@ public class BlogQueryDTO {
     @ApiModelProperty(value = "博客标签ID")
     private Integer labelId;
 
+    @ApiModelProperty(value = "状态(0-无效 1-有效)")
+    private String status;
+
 }

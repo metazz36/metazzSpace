@@ -57,7 +57,7 @@ public class ChatServiceImpl extends ServiceImpl<ChatMapper, Chat> implements IC
         // 1、删除说说(采用伪删除)
         Chat chat = new Chat();
         chat.setId(Integer.valueOf(id));
-        chat.setStatus("0");
+        chat.setStatus(CommonEnum.DISABLE.getCode());
         chat.setDeleteTime(new Date());
         this.updateById(chat);
         // 2、删除关联数据 —— 用户点赞说说
