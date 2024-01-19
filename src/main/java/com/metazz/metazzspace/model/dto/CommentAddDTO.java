@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @ApiModel(value = "发表评论DTO")
@@ -20,7 +21,7 @@ public class CommentAddDTO {
     /**
      * 对象ID(对应博客或说说或全站留言的ID)
      */
-    @NotBlank(message = "对象ID不能为空")
+    @NotNull(message = "对象ID不能为空")
     @ApiModelProperty(value = "对象ID(对应博客或说说或全站留言的ID)")
     private Integer objectId;
 
