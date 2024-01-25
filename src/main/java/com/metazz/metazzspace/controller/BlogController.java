@@ -1,5 +1,6 @@
 package com.metazz.metazzspace.controller;
 
+import com.metazz.metazzspace.common.annotation.LoginCheck;
 import com.metazz.metazzspace.common.annotation.SysLog;
 import com.metazz.metazzspace.common.response.BaseController;
 import com.metazz.metazzspace.common.response.CR;
@@ -26,6 +27,7 @@ public class BlogController implements BaseController {
     IBlogService blogService;
 
     @PostMapping("/add")
+    @LoginCheck(useType = "1")
     @SysLog(operateName = "新增博客")
     @ApiOperation(value = "新增博客", httpMethod = "POST")
     public CR addBlog(@RequestBody @Valid BlogAddDTO blogAddDTO){
@@ -36,6 +38,7 @@ public class BlogController implements BaseController {
 
     @DeleteMapping("/delete")
     @SysLog(operateName = "删除博客")
+    @LoginCheck(useType = "1")
     @ApiOperation(value = "删除博客", httpMethod = "DELETE")
     public CR deleteBlog(@RequestParam("id") String id){
         log.info("删除博客：{}",id);
@@ -45,6 +48,7 @@ public class BlogController implements BaseController {
 
     @PutMapping("/modify")
     @SysLog(operateName = "修改博客")
+    @LoginCheck(useType = "1")
     @ApiOperation(value = "修改博客", httpMethod = "PUT")
     public CR modifyBlog(@RequestBody @Valid BlogModifyDTO blogModifyDTO){
         log.info("修改博客：{}", blogModifyDTO);

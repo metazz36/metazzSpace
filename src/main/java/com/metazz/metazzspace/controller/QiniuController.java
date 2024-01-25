@@ -1,5 +1,6 @@
 package com.metazz.metazzspace.controller;
 
+import com.metazz.metazzspace.common.annotation.LoginCheck;
 import com.metazz.metazzspace.common.annotation.SysLog;
 import com.metazz.metazzspace.common.response.BaseController;
 import com.metazz.metazzspace.common.response.CR;
@@ -22,6 +23,7 @@ public class QiniuController implements BaseController {
 
     @GetMapping("/getUpToken")
     @SysLog(operateName = "获取覆盖上传凭证")
+    @LoginCheck(useType = "1")
     @ApiOperation(value = "获取覆盖上传凭证", httpMethod = "GET")
     public CR getUpToken(@RequestParam(value = "key",required = false) String key){
         return success(qiniuUtil.getToken(key));
@@ -29,6 +31,7 @@ public class QiniuController implements BaseController {
 
     @GetMapping("/serverUpload")
     @SysLog(operateName = "服务器直传")
+    @LoginCheck(useType = "1")
     @ApiOperation(value = "服务器直传", httpMethod = "GET")
     public CR serverUpload(@RequestParam(value = "fileName",required = true) String fileName) {
         return success(qiniuUtil.serverUpload(fileName));

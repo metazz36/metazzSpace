@@ -1,5 +1,6 @@
 package com.metazz.metazzspace.controller;
 
+import com.metazz.metazzspace.common.annotation.LoginCheck;
 import com.metazz.metazzspace.common.annotation.SysLog;
 import com.metazz.metazzspace.common.response.BaseController;
 import com.metazz.metazzspace.common.response.CR;
@@ -25,6 +26,7 @@ public class LabelController implements BaseController {
 
     @PostMapping("/add")
     @SysLog(operateName = "新增标签")
+    @LoginCheck(useType = "1")
     @ApiOperation(value = "新增标签", httpMethod = "POST")
     public CR addLabel(@RequestBody LabelAddDTO labelAddDTO){
         log.info("新增标签：{}", labelAddDTO);
@@ -34,6 +36,7 @@ public class LabelController implements BaseController {
 
     @DeleteMapping("/delete")
     @SysLog(operateName = "根据id删除标签")
+    @LoginCheck(useType = "1")
     @ApiOperation(value = "根据id删除标签", httpMethod = "DELETE")
     public CR deleteLabelById(@RequestParam("id") String id){
         labelService.deleteLabelById(id);
@@ -42,6 +45,7 @@ public class LabelController implements BaseController {
 
     @PutMapping("/modify")
     @SysLog(operateName = "修改标签")
+    @LoginCheck(useType = "1")
     @ApiOperation(value = "修改标签", httpMethod = "PUT")
     public CR modifyLabel(@RequestBody LabelModifyDTO labelModifyDTO){
         labelService.modifyLabel(labelModifyDTO);

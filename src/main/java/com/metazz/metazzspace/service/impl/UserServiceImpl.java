@@ -207,17 +207,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public void changeUserStatus(Integer userId, String status) {
         lambdaUpdate().eq(User::getId, userId).set(User::getStatus,status).update();
-        String token = (String) redisTemplate.opsForHash().get(CommonConstant.USERID_TOKEN, String.valueOf(userId));
         redisTemplate.opsForHash().delete(CommonConstant.USERID_TOKEN,String.valueOf(userId));
-        redisTemplate.delete(token);
+        String token = (String) redisTemplate.opsForHash().get(CommonConstant.USERID_TOKEN, String.valueOf(userId));
+        if(StrUtil.isNotBlank(token)){
+            redisTemplate.delete(token);
+        }
     }
 
     @Override
     public void changeUserCommentStatus(Integer userId, String commentStatus) {
         lambdaUpdate().eq(User::getId, userId).set(User::getCommentStatus,commentStatus).update();
-        String token = (String) redisTemplate.opsForHash().get(CommonConstant.USERID_TOKEN, String.valueOf(userId));
         redisTemplate.opsForHash().delete(CommonConstant.USERID_TOKEN,String.valueOf(userId));
-        redisTemplate.delete(token);
+        String token = (String) redisTemplate.opsForHash().get(CommonConstant.USERID_TOKEN, String.valueOf(userId));
+        if(StrUtil.isNotBlank(token)){
+            redisTemplate.delete(token);
+        }
     }
 
     @Override

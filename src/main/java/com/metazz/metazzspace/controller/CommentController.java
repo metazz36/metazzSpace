@@ -50,6 +50,7 @@ public class CommentController implements BaseController {
 
     @DeleteMapping("/delete")
     @SysLog(operateName = "根据id删除评论")
+    @LoginCheck
     @ApiOperation(value = "根据id删除评论", httpMethod = "DELETE")
     public CR deleteComment(@RequestParam("id") String id){
         log.info("根据id删除评论:{}",id);

@@ -78,6 +78,7 @@ public class UserController implements BaseController {
 
     @GetMapping("/changeUserStatus")
     @SysLog(operateName = "修改用户状态")
+    @LoginCheck(useType = "1")
     @ApiOperation(value = "修改用户状态", httpMethod = "GET")
     public CR changeUserStatus(@RequestParam("userId") Integer userId,@RequestParam("status") String status){
         log.info("修改用户状态: id:{},状态:{}(0-无效 1-有效)",userId,status);
@@ -87,6 +88,7 @@ public class UserController implements BaseController {
 
     @GetMapping("/changeUserCommentStatus")
     @SysLog(operateName = "修改用户评论状态")
+    @LoginCheck(useType = "1")
     @ApiOperation(value = "修改用户评论状态", httpMethod = "GET")
     public CR changeUserCommentStatus(@RequestParam("userId") Integer userId,@RequestParam("commentStatus") String commentStatus){
         log.info("修改用户评论状态: id:{},状态:{}(0-禁言 1-正常)",userId,commentStatus);
@@ -96,6 +98,7 @@ public class UserController implements BaseController {
 
     @PostMapping("/getByPage")
     @SysLog(operateName = "分页查询用户信息")
+    @LoginCheck(useType = "1")
     @ApiOperation(value = "分页查询用户信息", httpMethod = "POST")
     public CR getUserByPage(@RequestBody UserQueryDTO userQueryDTO){
         return success(userService.getUserByPage(userQueryDTO));
