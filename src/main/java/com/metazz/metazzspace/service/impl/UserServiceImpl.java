@@ -240,6 +240,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         Page<User> userPage = userMapper.selectPage(page, wrapper);
         if(CollectionUtil.isNotEmpty(userPage.getRecords())){
             userPage.getRecords().stream().forEach(user -> user.setPassword(null));
+            userPage.getRecords().removeIf(user -> CommonEnum.USER_TYPE_ADMIN.getCode().equals(user.getUserTag()));
         }
         return userPage;
     }
