@@ -29,7 +29,12 @@ public class ChatModifyDTO {
      * 是否开启评论(0-否 1-是)
      */
     @ApiModelProperty(value = "是否开启评论(0-否 1-是)")
-    @NotBlank(message = "是否开启评论不能为空")
     private String openComment;
+
+    /**
+     * 状态(0-无效 1-有效)
+     */
+    @ApiModelProperty(value = "状态(0-无效 1-有效)")
+    private String status;
 
 }
