@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
@@ -49,9 +50,21 @@ public class Blog implements Serializable {
     private Integer categoryId;
 
     /**
+     * 博客分类名字
+     */
+    @TableField(exist = false)
+    private String categoryName;
+
+    /**
      * 博客标签ID
      */
     private Integer labelId;
+
+    /**
+     * 博客标签名字
+     */
+    @TableField(exist = false)
+    private String labelName;
 
     /**
      * 博客点赞数

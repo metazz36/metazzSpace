@@ -1,34 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.metazz.metazzspace.mapper.BlogMapper">
-  <resultMap id="BaseResultMap" type="com.metazz.metazzspace.model.entity.Blog">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="summary" jdbcType="VARCHAR" property="summary" />
-    <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="image" jdbcType="VARCHAR" property="image" />
-    <result column="words" jdbcType="INTEGER" property="words" />
-    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
-    <result column="label_id" jdbcType="INTEGER" property="labelId" />
-    <result column="approvals" jdbcType="INTEGER" property="approvals" />
-    <result column="collections" jdbcType="INTEGER" property="collections" />
-    <result column="comments" jdbcType="INTEGER" property="comments" />
-    <result column="clicks" jdbcType="INTEGER" property="clicks" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="author" jdbcType="VARCHAR" property="author" />
-    <result column="sort" jdbcType="INTEGER" property="sort" />
-    <result column="source" jdbcType="VARCHAR" property="source" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="is_original" jdbcType="VARCHAR" property="isOriginal" />
-    <result column="is_publish" jdbcType="VARCHAR" property="isPublish" />
-    <result column="open_comment" jdbcType="VARCHAR" property="openComment" />
-    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
-    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
-    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, title, summary, content, image, words, category_id, label_id, approvals, collections, 
-    comments, clicks, user_id, author, sort, `source`, `status`, is_original, is_publish, 
-    open_comment, created_time, updated_time, delete_time
-  </sql>
+  <select id="queryBlogPage" resultType="com.metazz.metazzspace.model.entity.Blog">
+      SELECT
+        b.*,
+        c.name categoryName,
+        l.name labelName
+      FROM
+        blog b
+          LEFT JOIN category c ON b.category_id = c.id
+          LEFT JOIN label l ON b.label_id = l.id
+      <where>
+        1 = 1
+        <if test="dto.categoryId != 0">
+        AND b.category_id = #{dto.categoryId}
+        </if>
+        <if test="dto.labelId != 0">
+        AND b.label_id = #{dto.labelId}
+        </if>
+        <if test="dto.status != '' and dto.status != null ">
+        AND b.status = #{dto.status}
+        </if>
+        <if test="dto.title != '' and dto.title != null ">
+        AND b.title like '%${dto.title}%'
+        </if>
+      </where>
+  </select>
 </mapper>

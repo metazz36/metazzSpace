@@ -91,20 +91,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
     @Override
     public Page<Blog> getBlogByPage(BlogQueryDTO blogQueryDTO) {
         Page<Blog> page = new Page<>(blogQueryDTO.getCurrent(), blogQueryDTO.getSize());
-        LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
-        if(0 != blogQueryDTO.getCategoryId()){
-            wrapper.eq(Blog::getCategoryId,blogQueryDTO.getCategoryId());
-        }
-        if(0 != blogQueryDTO.getLabelId()){
-            wrapper.eq(Blog::getLabelId,blogQueryDTO.getLabelId());
-        }
-        if(StrUtil.isNotBlank(blogQueryDTO.getTitle())){
-            wrapper.like(Blog::getTitle,blogQueryDTO.getTitle());
-        }
-        if(StrUtil.isNotBlank(blogQueryDTO.getStatus())){
-            wrapper.eq(Blog::getStatus,blogQueryDTO.getStatus());
-        }
-        return blogMapper.selectPage(page, wrapper);
+        Page<Blog> blogPage = blogMapper.queryBlogPage(blogQueryDTO,page);
+        return blogPage;
     }
 
     @Override

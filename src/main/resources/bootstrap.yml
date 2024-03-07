@@ -74,3 +74,4 @@ mybatis-plus:
     auto-mapping-behavior: full
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
+  mapper-locations: classpath*:com.metazz.metazzspace.mapper/**/*Mapper.xml
