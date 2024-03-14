@@ -1,32 +1,6 @@
 server:
   port: 8005
 spring:
-  mail:
-    host: smtp.qq.com
-    username: 772150928@qq.com
-    password: nuwwfcusxvxxbdid
-    default-encoding: utf-8
-    protocol: smtp
-    port: 465
-    properties:
-      mail:
-        smtp:
-          socketFactory:
-            port: 465
-            class: javax.net.ssl.SSLSocketFactory
-          ssl:
-            enable: true
-  jackson:
-    time-zone: GMT+8
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://139.9.51.105:3306/metazz_space_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8
-    username: root
-    password: hfYJr6wExtnkXP3c
-    type: com.alibaba.druid.pool.DruidDataSource
-  redis:
-    host: 139.9.51.105
-    port: 6379
   application:
     name: metazzSpace
   profiles:
@@ -65,13 +39,16 @@ spring:
         enabled: true
         heartbeat:
           enabled: true
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
 
-mybatis-plus:
-  configuration:
-    auto-mapping-behavior: full
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-    map-underscore-to-camel-case: true
-  mapper-locations: classpath*:com.metazz.metazzspace.mapper/**/*Mapper.xml
+xxl:
+  job:
+    accessToken: default_token
+    admin:
+      addresses: http://139.9.51.105:8010/xxl-job-admin
+    executor:
+      address: ''
+      appname: blog-executor
+      ip: ''
+      logpath: /mydata/java/xxl-job/
+      logretentiondays: 30
+      port: 8888
