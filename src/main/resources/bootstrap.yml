@@ -40,6 +40,11 @@ spring:
         heartbeat:
           enabled: true
 
+rocketmq:
+  name-server: 139.9.51.105:9876
+  producer:
+    group: metazz-producers
+
 xxl:
   job:
     accessToken: default_token
