@@ -1,3 +1,4 @@
+/*
 package com.metazz.metazzspace.common.mq.consumer;
 
 import com.alibaba.fastjson.JSON;
@@ -8,10 +9,12 @@ import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.stereotype.Component;
 
+*/
 /**
  * 普通消息消费者
  *
- */
+ *//*
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -28,3 +31,4 @@ public class GeneralMessageDemoConsume implements RocketMQListener<GeneralMessag
     }
 
 }
+*/

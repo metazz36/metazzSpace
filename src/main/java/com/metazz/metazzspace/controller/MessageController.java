@@ -1,3 +1,4 @@
+/*
 package com.metazz.metazzspace.controller;
 
 import com.metazz.metazzspace.common.mq.event.GeneralMessageEvent;
@@ -44,3 +45,4 @@ public class MessageController implements BaseController {
     }
 
 }
+*/

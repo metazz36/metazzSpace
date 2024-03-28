@@ -1,3 +1,4 @@
+/*
 package com.metazz.metazzspace.common.mq.producer;
 
 import cn.hutool.core.util.StrUtil;
@@ -12,10 +13,12 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
+*/
 /**
  * 普通消息发送者
  *
- */
+ *//*
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -23,7 +26,8 @@ public class GeneralMessageDemoProduce {
 
     private final RocketMQTemplate rocketMQTemplate;
 
-    /**
+    */
+/**
      * 发送普通消息
      *
      * @param topic            消息发送主题，用于标识同一类业务逻辑的消息
@@ -31,7 +35,8 @@ public class GeneralMessageDemoProduce {
      * @param keys             消息索引键，可根据关键字精确查找某条消息
      * @param messageSendEvent 普通消息发送事件，自定义对象，最终都会序列化为字符串
      * @return 消息发送 RocketMQ 返回结果
-     */
+     *//*
+
     public SendResult sendMessage(String topic, String tag, String keys, GeneralMessageEvent messageSendEvent) {
         SendResult sendResult;
         try {
@@ -47,7 +52,7 @@ public class GeneralMessageDemoProduce {
             sendResult = rocketMQTemplate.syncSend(
                     destinationBuilder.toString(),
                     message,
-                    10000L
+                    2000L
             );
             log.info("[普通消息] 消息发送结果：{}，消息ID：{}，消息Keys：{}", sendResult.getSendStatus(), sendResult.getMsgId(), keys);
         } catch (Throwable ex) {
@@ -58,3 +63,4 @@ public class GeneralMessageDemoProduce {
     }
 
 }
+*/
