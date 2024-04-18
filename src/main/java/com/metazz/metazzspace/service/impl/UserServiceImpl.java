@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
+import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.metazz.metazzspace.common.constant.CommonConstant;
@@ -14,15 +15,9 @@ import com.metazz.metazzspace.common.exception.BaseException;
 import com.metazz.metazzspace.common.util.MailUtil;
 import com.metazz.metazzspace.common.util.MetazzUtil;
 import com.metazz.metazzspace.common.util.UserUtil;
-import com.metazz.metazzspace.mapper.BlogUserApplaudMapper;
-import com.metazz.metazzspace.mapper.BlogUserCollectMapper;
-import com.metazz.metazzspace.mapper.ChatUserApplaudMapper;
+import com.metazz.metazzspace.mapper.*;
 import com.metazz.metazzspace.model.dto.*;
-import com.metazz.metazzspace.model.entity.BlogUserApplaud;
-import com.metazz.metazzspace.model.entity.BlogUserCollect;
-import com.metazz.metazzspace.model.entity.ChatUserApplaud;
-import com.metazz.metazzspace.model.entity.User;
-import com.metazz.metazzspace.mapper.UserMapper;
+import com.metazz.metazzspace.model.entity.*;
 import com.metazz.metazzspace.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +26,7 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -53,6 +49,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Autowired
     ChatUserApplaudMapper chatUserApplaudMapper;
+
+    @Autowired
+    BlogMapper blogMapper;
 
     @Override
     public void getCode(String email,String purpose) {
@@ -247,16 +246,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public void applaudBlog(Integer blogId) {
+        Blog blog = new LambdaQueryChainWrapper<>(blogMapper).eq(Blog::getId, blogId).eq(Blog::getStatus,CommonEnum.ENABLE.getCode()).one();
+        if(!Optional.ofNullable(blog).isPresent()){
+            throw new BaseException(ExceptionEnum.BLOG_NOT_EXISTS);
+        }
         Integer userId = UserUtil.getUser().getId();
         BlogUserApplaud one = new LambdaQueryChainWrapper<>(blogUserApplaudMapper).
                 eq(BlogUserApplaud::getUserId, userId).
                 eq(BlogUserApplaud::getBlogId, blogId).
                 one();
         if(!Optional.ofNullable(one).isPresent()){
+            // 不存在，插入点赞记录
             BlogUserApplaud blogUserApplaud = new BlogUserApplaud();
             blogUserApplaud.setUserId(userId);
             blogUserApplaud.setBlogId(blogId);
             blogUserApplaudMapper.insert(blogUserApplaud);
+        }else{
+            // 存在，删除点赞记录
+            new LambdaUpdateChainWrapper<>(blogUserApplaudMapper).
+                    eq(BlogUserApplaud::getUserId, userId).
+                    eq(BlogUserApplaud::getBlogId, blogId).
+                    remove();
         }
     }
 
@@ -288,6 +298,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             chatUserApplaud.setChatId(chatId);
             chatUserApplaudMapper.insert(chatUserApplaud);
         }
+    }
+
+    @Override
+    public List queryApplaudBlog() {
+        Integer userId = UserUtil.getUser().getId();
+        List<BlogUserApplaud> list = new LambdaQueryChainWrapper<>(blogUserApplaudMapper).
+                eq(BlogUserApplaud::getUserId, userId).
+                list();
+        return list.stream().map(BlogUserApplaud::getBlogId).collect(Collectors.toList());
     }
 
 }

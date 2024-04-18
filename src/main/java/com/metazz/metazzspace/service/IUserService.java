@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.metazz.metazzspace.model.dto.*;
 import com.metazz.metazzspace.model.entity.User;
 
+import java.util.List;
+
 public interface IUserService extends IService<User> {
 
     void getCode(String email,String purpose);
@@ -30,5 +32,7 @@ public interface IUserService extends IService<User> {
     void collectBlog(Integer blogId);
 
     void applaudChat(Integer chatId);
+
+    List queryApplaudBlog();
 
 }

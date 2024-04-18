@@ -131,4 +131,12 @@ public class UserController implements BaseController {
         return success();
     }
 
+    @LoginCheck
+    @GetMapping("/queryApplaudBlog")
+    @SysLog(operateName = "查询用户点赞博客列表")
+    @ApiOperation(value = "查询用户点赞博客列表", httpMethod = "GET")
+    public CR queryApplaudBlog(){
+        return success(userService.queryApplaudBlog());
+    }
+
 }
