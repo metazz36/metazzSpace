@@ -39,6 +39,11 @@ public class Label implements Serializable {
     private Integer clicks;
 
     /**
+     * 博客数量
+     */
+    private Integer counts;
+
+    /**
      * 创建时间
      */
     private Date createdTime;

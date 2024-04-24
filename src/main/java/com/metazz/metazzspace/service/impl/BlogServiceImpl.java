@@ -2,7 +2,6 @@ package com.metazz.metazzspace.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,7 +9,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.metazz.metazzspace.common.enums.CommonEnum;
 import com.metazz.metazzspace.common.enums.ExceptionEnum;
 import com.metazz.metazzspace.common.exception.BaseException;
+import com.metazz.metazzspace.mapper.CategoryMapper;
 import com.metazz.metazzspace.mapper.CommentMapper;
+import com.metazz.metazzspace.mapper.LabelMapper;
 import com.metazz.metazzspace.model.dto.BlogAddDTO;
 import com.metazz.metazzspace.model.dto.BlogModifyDTO;
 import com.metazz.metazzspace.model.dto.BlogQueryDTO;
@@ -41,6 +42,12 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
     @Autowired
     CommentMapper commentMapper;
 
+    @Autowired
+    CategoryMapper categoryMapper;
+
+    @Autowired
+    LabelMapper labelMapper;
+
     @Override
     public void addBlog(BlogAddDTO blogAddDTO) {
         // 标题唯一
@@ -56,19 +63,27 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         blog.setIsOriginal("1");
         blog.setSource("原创");
         this.save(blog);
+        // 对应分类博客数量+1
+        categoryMapper.incrCount(blogAddDTO.getCategoryId());
+        // 对应标签博客数量+1
+        labelMapper.incrCount(blogAddDTO.getLabelId());
     }
 
     @Override
     public void deleteBlog(String id) {
-        if(!Optional.ofNullable(blogMapper.selectById(id)).isPresent()){
+        Blog blog = lambdaQuery().
+                eq(Blog::getId, Integer.valueOf(id)).
+                eq(Blog::getStatus, CommonEnum.ENABLE.getCode()).
+                one();
+        if(!Optional.ofNullable(blog).isPresent()){
             throw new BaseException(ExceptionEnum.BLOG_NOT_EXISTS);
         }
         // 1、删除博客(采用伪删除)
-        Blog blog = new Blog();
-        blog.setId(Integer.valueOf(id));
-        blog.setStatus("0");
-        blog.setDeleteTime(new Date());
-        blogMapper.updateById(blog);
+        lambdaUpdate().
+                set(Blog::getStatus,CommonEnum.DISABLE.getCode()).
+                set(Blog::getDeleteTime,new Date()).
+                eq(Blog::getId, Integer.valueOf(id)).
+                update();
         // 2、删除关联数据 —— 用户收藏博客
         blogUserCollectService.deleteByBlogId(Integer.valueOf(id));
         // 3、删除关联数据 —— 用户点赞博客
@@ -81,6 +96,10 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
                 set(Comment::getStatus,CommonEnum.DISABLE.getCode()).
                 set(Comment::getDeleteTime,new Date()).
                 update();
+        // 5、对应分类博客数量-1
+        categoryMapper.decrCount(blog.getCategoryId());
+        // 6、对应标签博客数量-1
+        labelMapper.decrCount(blog.getLabelId());
     }
 
     @Override
@@ -97,7 +116,10 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
 
     @Override
     public void modifyBlog(BlogModifyDTO blogModifyDTO) {
-        Blog blog = blogMapper.selectById(blogModifyDTO.getId());
+        Blog blog = lambdaQuery().
+                eq(Blog::getId, blogModifyDTO.getId()).
+                eq(Blog::getStatus, CommonEnum.ENABLE.getCode()).
+                one();
         if(!Optional.ofNullable(blog).isPresent()){
             throw new BaseException(ExceptionEnum.BLOG_NOT_EXISTS);
         }
@@ -110,6 +132,20 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
             }
         }
         blogMapper.updateById(BeanUtil.toBean(blogModifyDTO,Blog.class));
+        // 若修改了分类，调整分类对应博客数量
+        if(!blog.getCategoryId().equals(blogModifyDTO.getCategoryId())){
+            // 原分类博客数量-1
+            categoryMapper.decrCount(blog.getCategoryId());
+            // 现分类博客数量-1
+            categoryMapper.incrCount(blogModifyDTO.getCategoryId());
+        }
+        // 若修改了标签，调整标签对应博客数量
+        if(!blog.getLabelId().equals(blogModifyDTO.getLabelId())){
+            // 原标签博客数量-1
+            labelMapper.decrCount(blog.getLabelId());
+            // 现标签博客数量-1
+            labelMapper.incrCount(blogModifyDTO.getLabelId());
+        }
     }
 
 }

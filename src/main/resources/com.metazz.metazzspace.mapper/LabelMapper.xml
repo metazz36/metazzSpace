@@ -7,11 +7,18 @@
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="sort" jdbcType="INTEGER" property="sort" />
     <result column="clicks" jdbcType="INTEGER" property="clicks" />
+    <result column="counts" jdbcType="INTEGER" property="counts" />
     <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
     <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, `name`, `status`, sort, clicks, created_time, updated_time, delete_time
+    id, `name`, `status`, sort, clicks, counts, created_time, updated_time, delete_time
   </sql>
+    <update id="incrCount">
+      update label set counts = counts + 1 where id = #{id}
+    </update>
+  <update id="decrCount">
+      update label set counts = counts - 1 where id = #{id}
+  </update>
 </mapper>
