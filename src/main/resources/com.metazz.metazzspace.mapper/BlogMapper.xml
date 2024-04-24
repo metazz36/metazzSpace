@@ -25,5 +25,6 @@
         AND b.title like '%${dto.title}%'
         </if>
       </where>
+      ORDER BY sort desc
   </select>
 </mapper>

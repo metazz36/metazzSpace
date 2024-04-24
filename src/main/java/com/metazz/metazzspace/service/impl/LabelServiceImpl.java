@@ -46,7 +46,9 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
     @Override
     public Page<Label> getAllLabel(PageQueryDTO pageQueryDTO) {
         Page<Label> page = new Page<>(pageQueryDTO.getCurrent(), pageQueryDTO.getSize());
-        return labelMapper.selectPage(page,null);
+        LambdaQueryWrapper<Label> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(Label::getSort);
+        return labelMapper.selectPage(page,wrapper);
     }
 
     @Override

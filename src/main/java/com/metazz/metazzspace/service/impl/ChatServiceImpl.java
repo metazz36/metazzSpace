@@ -79,6 +79,7 @@ public class ChatServiceImpl extends ServiceImpl<ChatMapper, Chat> implements IC
         if(StrUtil.isNotBlank(chatQueryDTO.getStatus())){
             wrapper.eq(Chat::getStatus,chatQueryDTO.getStatus());
         }
+        wrapper.orderByDesc(Chat::getCreatedTime);
         return chatMapper.selectPage(page, wrapper);
     }
 

@@ -34,7 +34,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Override
     public Page<Category> getAllCategory(PageQueryDTO pageQueryDTO) {
         Page<Category> page = new Page<>(pageQueryDTO.getCurrent(), pageQueryDTO.getSize());
-        return categoryMapper.selectPage(page,null);
+        LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(Category::getSort);
+        return categoryMapper.selectPage(page,wrapper);
     }
 
     @Override
